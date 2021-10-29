@@ -64,8 +64,7 @@ const Review: NextPage = () => {
         });
       }
     );
-    console.log(result);
-    // mutation.mutate(result);
+    mutation.mutate(result);
   };
 
   const handleCheckLevel =
