@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import Image from 'next/image';
 import React from 'react';
-import { USER_LEVEL, LEVEL } from '@/types';
+import { USER_LEVEL } from '@/types';
 import Navigator from '../Navigator';
 import level_0 from 'public/assets/Main/level0.svg';
 import level_1 from 'public/assets/Main/level1.svg';
@@ -49,26 +49,6 @@ const Title = styled.p`
   font-size: 20px;
   font-family: SBAggroB;
   line-height: 28px;
-`;
-
-const SpicyLevelContainer = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  margin-top: 16px;
-
-  & div {
-    display: flex;
-    flex-direction: column;
-    margin: 0 6px;
-
-    & p {
-      font-size: 13px;
-      font-weight: 700;
-      margin-top: 8px;
-      color: ${({ theme }) => theme.colors.grey10};
-    }
-  }
 `;
 
 export default ProfileCard;
