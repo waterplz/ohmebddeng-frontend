@@ -1,6 +1,6 @@
 import { apiClient } from '@/api';
 import { User, userIdKey } from '@/api/user';
-import { Food, LEVEL } from '@/types';
+import { Food, HOT_LEVEL_SERVER } from '@/types';
 
 export interface LevelTestFoods {
   data: Food[];
@@ -15,7 +15,7 @@ export const getLevelTestFoodsQuery = async () => {
 };
 
 export const postLevelTestQuery = async (testResults: {
-  [foodId: string]: LEVEL;
+  [foodId: string]: HOT_LEVEL_SERVER;
 }) => {
   const userId = localStorage.getItem(userIdKey);
   const { data } = await apiClient.post<User>(`/user/level`, {
