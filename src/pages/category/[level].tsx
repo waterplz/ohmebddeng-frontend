@@ -42,6 +42,13 @@ const CategoryByTaste: NextPage = () => {
     []
   );
 
+  const handleClickFood = useCallback(
+    (foodId: string) => () => {
+      router.push(`${ROUTES.FOOD_DETAIL}/${foodId}`);
+    },
+    [router]
+  );
+
   return (
     <div>
       <Header type="center">오늘 뭐가 땡겨?</Header>
@@ -83,7 +90,7 @@ const CategoryByTaste: NextPage = () => {
         </FilterContainer>
         <Lists>
           {data?.data.map((food) => (
-            <FoodItem key={food.name}>
+            <FoodItem key={food.name} onClick={handleClickFood(food.id)}>
               <Image
                 src={food.imageUrl}
                 alt={food.name}
