@@ -8,7 +8,7 @@ import FoodOverview from '@/components/Common/FoodOverview';
 import Button from '@/components/Input/Button';
 import { TasteForm } from '@/components/Review';
 import { ROUTES } from '@/constants';
-import { Food, LEVEL, ReviewState, TASTE } from '@/types';
+import { Food, HOT_LEVEL_SERVER, ReviewState, TASTE } from '@/types';
 
 const ReviewWrite: NextPage<Food> = ({
   imageUrl = '/assets/FoodReview/0.svg',
@@ -21,7 +21,7 @@ const ReviewWrite: NextPage<Food> = ({
   const food = { imageUrl, name, subName, id } as Food;
 
   const handleCheckLevel = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const level = (event.target as HTMLInputElement).value as LEVEL;
+    const level = (event.target as HTMLInputElement).value as HOT_LEVEL_SERVER;
     setReview({ ...review, level });
   };
   const handleCheckTaste = (event: React.ChangeEvent<HTMLInputElement>) => {
