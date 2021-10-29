@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import React from 'react';
-import { LEVEL, TASTE_LEVEL } from '@/types';
+import { HOT_LEVEL_CLIENT, TASTE_LEVEL } from '@/types';
 import svg_0 from 'public/assets/SpciyLevelInput/0.svg';
 import svg_0_disabled from 'public/assets/SpciyLevelInput/0_disabled.svg';
 import svg_1 from 'public/assets/SpciyLevelInput/1.svg';
@@ -13,7 +13,7 @@ import svg_4 from 'public/assets/SpciyLevelInput/4.svg';
 import svg_4_disabled from 'public/assets/SpciyLevelInput/4_disabled.svg';
 
 interface SpicyLevelIconProps {
-  level: LEVEL | TASTE_LEVEL;
+  level: HOT_LEVEL_CLIENT | TASTE_LEVEL;
   checked: boolean;
   width?: number;
   height?: number;
