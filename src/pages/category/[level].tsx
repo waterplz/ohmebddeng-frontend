@@ -4,13 +4,21 @@ import type { NextPage } from 'next';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useCallback } from 'react';
+import { useQuery } from 'react-query';
+import { FoodsByUserLevel, getFoodsByUserLevel } from '@/api/food';
 import { Header } from '@/components/Common';
 import { ROUTES } from '@/constants';
-import { TASTE_LEVEL } from '@/types';
+import { LEVEL_NUMBER, TASTE_LEVEL } from '@/types';
 
 const CategoryByTaste: NextPage = () => {
   const router = useRouter();
   const { level } = router.query;
+
+  const { data } = useQuery<FoodsByUserLevel>(
+    ['getFoodsByUserLevel', level],
+    () => getFoodsByUserLevel(LEVEL_NUMBER[level as TASTE_LEVEL]),
+    { enabled: !!level }
+  );
 
   const handleClickTab = useCallback(
     (level: TASTE_LEVEL) => () => {
@@ -35,17 +43,17 @@ const CategoryByTaste: NextPage = () => {
           ))}
         </Tabs>
         <Lists>
-          {data.map((food) => (
-            <FoodItem key={food.id}>
+          {data?.data.map((food) => (
+            <FoodItem key={food.name}>
               <Image
-                src={food.image_url}
+                src={food.imageUrl}
                 alt={food.name}
                 width={52}
                 height={42}
               />
               <FoodInfo>
                 <Name>{food.name}</Name>
-                <Info>{food.description}</Info>
+                {/* <Info>{food.description}</Info> */}
               </FoodInfo>
             </FoodItem>
           ))}
@@ -103,31 +111,3 @@ const Info = styled.div`
 `;
 
 export default CategoryByTaste;
-
-// TODO: API로부터 데이터 불러오기
-const data = [
-  {
-    id: 1,
-    name: '엽기떡볶이 1단계',
-    image_url: '/assets/FoodReview/0.svg',
-    description: '#칼칼한 #매콤달콤',
-  },
-  {
-    id: 2,
-    name: '엽기떡볶이 1단계',
-    image_url: '/assets/FoodReview/0.svg',
-    description: '#칼칼한 #매콤달콤',
-  },
-  {
-    id: 3,
-    name: '엽기떡볶이 1단계',
-    image_url: '/assets/FoodReview/0.svg',
-    description: '#칼칼한 #매콤달콤',
-  },
-  {
-    id: 4,
-    name: '엽기떡볶이 1단계',
-    image_url: '/assets/FoodReview/0.svg',
-    description: '#칼칼한 #매콤달콤',
-  },
-];

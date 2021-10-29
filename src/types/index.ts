@@ -12,6 +12,13 @@ export enum LEVEL {
   모름 = '모름',
 }
 
+export enum LEVEL_NUMBER {
+  냠냠 = 1,
+  쓰읍 = 2,
+  씁하 = 3,
+  헥헥 = 4,
+}
+
 export enum TASTE {
   매콤달콤한 = '매콤달콤한',
   개운한 = '개운한',
