@@ -10,12 +10,7 @@ import { Header, SpicyLevelForm } from '@/components/Common';
 import Button from '@/components/Input/Button';
 import { TasteForm } from '@/components/Review';
 import { ROUTES } from '@/constants';
-import {
-  HOT_LEVEL_CLIENT,
-  HOT_LEVEL_SERVER,
-  TASTE,
-  ReviewState,
-} from '@/types';
+import { HOT_LEVEL_SERVER, TASTE, ReviewState } from '@/types';
 import svg_0 from 'public/assets/FoodReview/0.svg';
 
 const foodInfo = new Map();

@@ -1,10 +1,10 @@
 import { apiClient } from '@/api';
 import { User, userIdKey } from '@/api/user';
-import { LEVEL } from '@/types';
+import { HOT_LEVEL_SERVER } from '@/types';
 
 export interface CreatedReview {
   foodId: string;
-  hotLevel: LEVEL;
+  hotLevel: HOT_LEVEL_SERVER;
   tagIds: string[];
 }
 
