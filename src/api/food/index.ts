@@ -1,15 +1,20 @@
 import { apiClient } from '@/api';
-import { Food } from '@/types';
+import { Food, TASTE_LEVEL } from '@/types';
 
-export interface FoodsByUserLevel {
+export interface Foods {
   data: Food[];
   statusCode: 200;
   message: 'Success';
 }
 
-export const getFoodsByUserLevel = async (userLevel: number) => {
-  const { data } = await apiClient.get<FoodsByUserLevel>(`/food/tests/result`, {
-    params: { userLevel },
+interface GetFoodsParams {
+  category?: string;
+  hotLevel?: TASTE_LEVEL;
+}
+
+export const getFoods = async ({ category, hotLevel }: GetFoodsParams) => {
+  const { data } = await apiClient.get<Foods>(`/food`, {
+    params: { category, hotLevel },
   });
 
   return data;
