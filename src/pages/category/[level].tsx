@@ -49,11 +49,14 @@ const CategoryByTaste: NextPage = () => {
                 src={food.imageUrl}
                 alt={food.name}
                 width={52}
-                height={42}
+                height={84}
               />
               <FoodInfo>
                 <Name>{food.name}</Name>
-                {/* <Info>{food.description}</Info> */}
+                <Info>
+                  Lorem ipsum dolor, <br />
+                  sit amet consectetur adipisicing elit.
+                </Info>
               </FoodInfo>
             </FoodItem>
           ))}
@@ -98,7 +101,9 @@ const FoodItem = styled.div`
   display: flex;
 `;
 const FoodInfo = styled.div`
+  margin-top: 10px;
   margin-left: 26px;
+  text-align: left;
 `;
 const Name = styled.div`
   margin-bottom: 8px;
