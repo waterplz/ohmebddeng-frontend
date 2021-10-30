@@ -31,6 +31,19 @@ const Container = styled.label<{ checked?: boolean }>`
   padding: 12px 18px 11px;
   text-align: center;
   cursor: pointer;
+
+  margin-left: 12px;
+
+  &:first-of-type {
+    margin-left: 0;
+  }
+
+  &:nth-of-type(4) {
+    margin-left: 0;
+  }
+  &:nth-of-type(-n + 3) {
+    margin-bottom: 9px;
+  }
 `;
 
 const Input = styled.input`

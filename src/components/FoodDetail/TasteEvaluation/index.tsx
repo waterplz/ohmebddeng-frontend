@@ -46,7 +46,10 @@ const TasteContantList = styled.form`
   display: flex;
   flex-wrap: wrap;
   padding: 0 20px;
-  gap: 12px 12px;
+
+  & label {
+    margin: 6px 6px;
+  }
 `;
 
 const TasteContant = styled.label`
@@ -56,6 +59,14 @@ const TasteContant = styled.label`
   color: ${({ theme }) => theme.colors.grey0};
   padding: 12px 18px 11px;
   text-align: center;
+
+  &:first-of-type {
+    margin-left: 0;
+  }
+
+  &:nth-of-type(4) {
+    margin-left: 0;
+  }
 `;
 
 const ReviewBtn = styled.div`

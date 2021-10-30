@@ -32,6 +32,7 @@ const SpicyLevelIcon = ({
         alt={level}
         width={width}
         height={height}
+        layout="fixed"
       />
     ),
     쓰읍: (
@@ -40,6 +41,7 @@ const SpicyLevelIcon = ({
         alt={level}
         width={width}
         height={height}
+        layout="fixed"
       />
     ),
     씁하: (
@@ -48,6 +50,7 @@ const SpicyLevelIcon = ({
         alt={level}
         width={width}
         height={height}
+        layout="fixed"
       />
     ),
     헥헥: (
@@ -56,6 +59,7 @@ const SpicyLevelIcon = ({
         alt={level}
         width={width}
         height={height}
+        layout="fixed"
       />
     ),
     모름: (
@@ -64,6 +68,7 @@ const SpicyLevelIcon = ({
         alt={level}
         width={width}
         height={height}
+        layout="fixed"
       />
     ),
   };

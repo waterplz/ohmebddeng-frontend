@@ -142,26 +142,31 @@ const ReviewContainer = styled.div`
   margin: 16px 0 80px;
   display: flex;
   flex-direction: column;
-  gap: 20px 0;
+
+  & section:not(:last-child) {
+    margin-bottom: 20px;
+  }
 `;
 
 const Divider = styled.div`
+  margin-top: 20px;
+  margin-bottom: 0 !important;
   border-top: ${({ theme }) => `2px solid ${theme.colors.grey40}`};
 `;
 
 const ReviewSection = styled.section`
   display: flex;
   flex-direction: column;
-  gap: 40px 0;
   width: 100%;
   min-height: 315px;
   background-color: rgba(255, 255, 255, 0.1);
   border-radius: 16px;
-  padding: 24px 16px;
+  padding: 17px 16px 16px 16px;
 
   & div {
     display: flex;
     align-items: center;
+    margin-bottom: 20px;
 
     & h2 {
       margin-left: 8px;
