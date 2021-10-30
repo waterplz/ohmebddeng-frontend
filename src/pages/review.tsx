@@ -62,7 +62,6 @@ const Review: NextPage = () => {
       const tagIds = Array.from(taste);
       result.push({ hotLevel: level, tagIds, foodId: foodInfo.get(foodName) });
     });
-    console.log(result);
     mutation.mutate(result);
   };
 
@@ -166,6 +165,7 @@ const ReviewSection = styled.section`
 
     & h2 {
       margin-left: 8px;
+      line-height: 1;
     }
   }
 `;
