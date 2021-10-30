@@ -11,11 +11,18 @@ const TasteTagInput = ({
   name,
   type,
   checked,
+  disabled,
   ...rest
 }: TasteTagInputProps) => {
   return (
     <Container checked={checked}>
-      <Input type={type ?? 'checkbox'} name={name} value={name} {...rest} />
+      <Input
+        type={type ?? 'checkbox'}
+        name={name}
+        value={name}
+        {...rest}
+        disabled={disabled}
+      />
       {name}
     </Container>
   );

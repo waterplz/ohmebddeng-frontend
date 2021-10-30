@@ -44,7 +44,7 @@ const Review: NextPage = () => {
 
   useEffect(() => {
     for (const [_, { level, taste }] of Array.from(reviews.entries())) {
-      if (!level || !taste || !taste.size) {
+      if (!level || (level !== LEVEL.모름 && (!taste || !taste.size))) {
         setIsTestDone(false);
         return;
       }
@@ -110,6 +110,7 @@ const Review: NextPage = () => {
                   />
                   <Divider>
                     <TasteForm
+                      disabled={data?.level === LEVEL.모름}
                       taste={data?.taste}
                       onChange={handleCheckTaste(foodName)}
                     />
