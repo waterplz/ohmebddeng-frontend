@@ -1,12 +1,18 @@
 import { apiClient } from '@/api';
 import { User, userIdKey } from '@/api/user';
 import { LEVEL } from '@/types';
+import { LevelTestFoods } from '../levelTest';
 
 export interface CreatedReview {
   foodId: string;
   hotLevel: LEVEL;
   tagIds: string[];
 }
+
+export const getInitialReviewFood = async () => {
+  const { data } = await apiClient.get<LevelTestFoods>('food/reviews');
+  return data;
+};
 
 // 리뷰 결과 보내는 쿼리 작성 (한 개)
 export const postInitialReviewQuery = async (review: CreatedReview) => {
