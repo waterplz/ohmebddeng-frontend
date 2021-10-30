@@ -27,7 +27,6 @@ const SpicyLevelForm = ({ level, ...props }: SpicyLevelFormProps) => {
 const Form = styled.form`
   display: flex;
   justify-content: center;
-  gap: 0 24px;
 `;
 
 export default SpicyLevelForm;

@@ -25,6 +25,7 @@ const SpicyLevelInput = ({
 };
 
 const Label = styled.label`
+  margin: 0 9px;
   & input {
     position: absolute;
     opacity: 0;
