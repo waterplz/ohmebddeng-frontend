@@ -5,11 +5,11 @@ import { TASTE } from '@/types';
 
 export interface TasteFormProps {
   taste?: Set<TASTE>;
-  disabled: boolean;
+  disabled?: boolean;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const TasteForm = ({ taste, disabled, ...props }: TasteFormProps) => {
+const TasteForm = ({ taste, disabled = false, ...props }: TasteFormProps) => {
   return (
     <Form id="spicyLevelForm">
       {Object.values(TASTE).map((name) => (
