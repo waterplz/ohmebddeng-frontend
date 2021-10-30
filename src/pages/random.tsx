@@ -15,8 +15,8 @@ const TestResult: NextPage = () => {
     getRandomFood
   );
 
-  const goHome = () => {
-    router.push(ROUTES.HOME);
+  const goMain = () => {
+    router.push(ROUTES.MAIN);
   };
 
   const reRecommand = () => {
@@ -60,7 +60,7 @@ const TestResult: NextPage = () => {
             buttonType="outline"
             color="red"
             rounded
-            onClick={goHome}
+            onClick={goMain}
           >
             <div className="test-result__buttons__center">홈으로</div>
           </Button>
