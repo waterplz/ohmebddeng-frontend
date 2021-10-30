@@ -90,7 +90,7 @@ const CategoryByTaste: NextPage = () => {
         </FilterContainer>
         <Lists>
           {data?.data.map((food) => (
-            <FoodItem key={food.name} onClick={handleClickFood(food.id)}>
+            <FoodItem key={food.id} onClick={handleClickFood(food.id)}>
               <Image
                 src={food.imageUrl}
                 alt={food.name}
