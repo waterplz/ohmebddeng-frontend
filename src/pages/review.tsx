@@ -70,7 +70,12 @@ const Review: NextPage = () => {
       const level = (event.target as HTMLInputElement).value as LEVEL;
       setReviews(
         (prev) =>
-          new Map(prev.set(name, { level, taste: prev.get(name)?.taste }))
+          new Map(
+            prev.set(name, {
+              level,
+              taste: level === LEVEL.모름 ? new Set() : prev.get(name)?.taste,
+            })
+          )
       );
     };
 
