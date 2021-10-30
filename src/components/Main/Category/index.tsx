@@ -19,6 +19,7 @@ export interface CategoryProps extends ItemProps {
     textSecond?: string;
     image?: string;
     color: string;
+    onClick?: () => void;
   }[];
 }
 const Category = ({
@@ -37,7 +38,12 @@ const Category = ({
       <Title>{title}</Title>
       <Content>
         {contents.map((content, index) => (
-          <Item key={`Item${index}`} color={content.color} {...props}>
+          <Item
+            key={`Item${index}`}
+            color={content.color}
+            onClick={content.onClick}
+            {...props}
+          >
             <ItemContent>
               {content.image && (
                 <Image
