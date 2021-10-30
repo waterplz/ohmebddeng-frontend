@@ -1,12 +1,14 @@
 import styled from '@emotion/styled';
 import type { NextPage } from 'next';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useRouter } from 'next/router';
+import { useCallback, useMemo, useState } from 'react';
 import { useQuery } from 'react-query';
 import Slider from 'react-slick';
 import { getUserQuery, User } from '@/api/user';
 import { Header, Drawer } from '@/components/Common';
 import { Category, ProfileCard } from '@/components/Main';
+import { ROUTES } from '@/constants';
 import { USER_LEVEL } from '@/types';
 import drawer_navigator from 'public/assets/common/hamburger.svg';
 import svg_0 from 'public/assets/Main/0.svg';
@@ -47,18 +49,6 @@ const Recommend = {
   ],
 };
 
-const Random = {
-  title: '뭐 먹을지 모르겠으면?',
-  contents: [
-    {
-      textFirst: '랜덤 음식 뽑기',
-      image: svg_random,
-      color: '#E34B4B',
-    },
-  ],
-  height: 104,
-};
-
 const UserLevelNumber: { [index: number]: USER_LEVEL } = {
   1: USER_LEVEL.맵찔이,
   2: USER_LEVEL.맵초보,
@@ -72,11 +62,32 @@ const sliderSetting = {
 };
 
 const Main: NextPage = () => {
+  const router = useRouter();
   const [drawerOpend, setDrawerOpend] = useState(false);
   const { data: user } = useQuery<User>(['getUser'], getUserQuery);
 
   const handleDrawerOpen = () => setDrawerOpend(true);
   const hanldeDrawerClose = () => setDrawerOpend(false);
+
+  const handleClickRandom = useCallback(() => {
+    router.push(ROUTES.RANDOM);
+  }, [router]);
+
+  const Random = useMemo(
+    () => ({
+      title: '뭐 먹을지 모르겠으면?',
+      contents: [
+        {
+          textFirst: '랜덤 음식 뽑기',
+          image: svg_random,
+          color: '#E34B4B',
+          onClick: handleClickRandom,
+        },
+      ],
+      height: 104,
+    }),
+    [handleClickRandom]
+  );
 
   return (
     <>

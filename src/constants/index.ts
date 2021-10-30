@@ -8,4 +8,5 @@ export const ROUTES = {
   CATEGORY: '/category',
   INQURY: '/inqury',
   FOOD_DETAIL: '/foodDetail',
+  RANDOM: '/random',
 };
