@@ -150,6 +150,7 @@ const ReviewContainer = styled.div`
 
 const Divider = styled.div`
   margin-top: 20px;
+  margin-bottom: 0 !important;
   border-top: ${({ theme }) => `2px solid ${theme.colors.grey40}`};
 `;
 
@@ -160,7 +161,7 @@ const ReviewSection = styled.section`
   min-height: 315px;
   background-color: rgba(255, 255, 255, 0.1);
   border-radius: 16px;
-  padding: 24px 16px;
+  padding: 17px 16px 16px 16px;
 
   & div {
     display: flex;
