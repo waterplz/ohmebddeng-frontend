@@ -3,8 +3,6 @@ import type { NextPage } from 'next';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
-import { useQuery } from 'react-query';
-import { getUserData, User } from '@/api/user';
 import { Loading, Header } from '@/components/Common';
 import TestResultHead from '@/components/Head/testResultHead';
 import Button from '@/components/Input/Button';
@@ -15,12 +13,9 @@ import share from 'public/assets/TestResult/share.svg';
 const TestResult: NextPage = () => {
   const [isResult, setIsResult] = useState<boolean>(false);
   const router = useRouter();
-
-  const { status, data } = useQuery<User>('getUserData', getUserData);
-
-  const userLevel = data?.data?.userLevel?.level as number;
+  const { userLevel } = router.query;
   // 데이터 없으면 ..?.
-  const info = levelInfo[userLevel];
+  const info = levelInfo[parseInt(userLevel as string)];
 
   const goHome = () => {
     router.push(ROUTES.MAIN);
@@ -43,23 +38,17 @@ const TestResult: NextPage = () => {
     } else {
       // fallback
       // 직접 폴백 다이얼로그를 만들어서 띄우는 로직 or 다른 브라우저를 사용하라는 메세지
-      console.log('fallback');
+      alert(
+        '공유하기를 지원하지 않는 브라우저입니다. 다른 브라우저에서 공유해주세요.'
+      );
     }
-    const sharePromise = await window.navigator.share({
-      title: document.title,
-      text: 'test text',
-      url: 'http://localhost:3000/testResult',
-    });
-    console.log(sharePromise);
   };
 
   useEffect(() => {
-    if (status !== 'loading') {
-      setTimeout(() => {
-        setIsResult(true);
-      }, 2000);
-    }
-  }, [status]);
+    setTimeout(() => {
+      setIsResult(true);
+    }, 2000);
+  }, []);
 
   return (
     <>
@@ -71,7 +60,7 @@ const TestResult: NextPage = () => {
         {isResult && info ? (
           <TestResultWrapper>
             <div className="test-result__image-box">
-              <img src={info.img} alt={`level_${data?.data?.userLevel}`} />
+              <img src={info.img} alt={`level_${userLevel}`} />
             </div>
             <div className="test-result__content-box outline">
               <h2>{info.title}</h2>
