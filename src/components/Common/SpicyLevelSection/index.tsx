@@ -15,7 +15,7 @@ const SpicyLevelSection = ({ level, ...props }: SpicyLevelSectionProps) => {
     <section
       css={css`
         margin: 0 16px;
-        padding: 24px 26px;
+        padding: 24px 0;
         background-color: rgba(255, 255, 255, 0.1);
         border-radius: 14px;
       `}
