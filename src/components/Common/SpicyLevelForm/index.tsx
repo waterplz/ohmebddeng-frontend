@@ -27,8 +27,14 @@ const SpicyLevelForm = ({ level, ...props }: SpicyLevelFormProps) => {
 const Form = styled.form`
   display: flex;
   justify-content: center;
+  padding: 0 8px;
   & > label {
-    margin: 0 11px;
+    margin: auto;
+  }
+  @media all and (min-width: 375px) {
+    & > label {
+      margin: 0 11px;
+    }
   }
 `;
 

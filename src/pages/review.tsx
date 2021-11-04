@@ -127,15 +127,16 @@ const Review: NextPage = () => {
               );
             })}
         </ReviewContainer>
-        <Button
-          buttonType={'contained'}
-          color={isTestDone ? 'red' : 'grey'}
-          rounded={false}
-          onClick={handleSubmit}
-        >
-          완료
-        </Button>
       </Container>
+      <Button
+        fullWidth
+        buttonType={'contained'}
+        color={isTestDone ? 'red' : 'grey'}
+        rounded={false}
+        onClick={handleSubmit}
+      >
+        완료
+      </Button>
     </>
   );
 };
