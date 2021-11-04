@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import type { NextPage } from 'next';
+import Image from 'next/image';
 import router from 'next/router';
 import { useState } from 'react';
 import { useQuery } from 'react-query';
@@ -31,9 +32,14 @@ const TestResult: NextPage = () => {
       <Container>
         {status !== 'loading' ? (
           <div className="random__content">
-            <div className="random__content__image-box">
-              {data && <img src={data?.imageUrl} alt="error" />}
-            </div>
+            {data && (
+              <Image
+                src={data?.imageUrl}
+                alt="error"
+                width="124"
+                height="193"
+              />
+            )}
             <div className="random__content__text">
               <h2>{data && data.name}</h2>
               <h2 className="random__content__text__sub">
@@ -44,8 +50,7 @@ const TestResult: NextPage = () => {
         ) : (
           <div>로딩중</div>
         )}
-
-        <div className="random__buttons">
+        <Buttons>
           <Button
             buttonType="outline"
             color="green"
@@ -62,15 +67,18 @@ const TestResult: NextPage = () => {
             rounded
             onClick={goMain}
           >
-            <div className="test-result__buttons__center">홈으로</div>
+            홈으로
           </Button>
-        </div>
+        </Buttons>
       </Container>
     </>
   );
 };
 
 const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   .random {
     &__content {
       display: flex;
@@ -97,15 +105,17 @@ const Container = styled.div`
         }
       }
     }
-    &__buttons {
-      position: absolute;
-      left: 16px;
-      right: 16px;
-      bottom: 66px;
-      button + button {
-        margin-top: 16px;
-      }
-    }
+  }
+`;
+
+const Buttons = styled.div`
+  width: 343px;
+  margin-top: 181px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  & button:first-of-type {
+    margin-bottom: 16px;
   }
 `;
 export default TestResult;
