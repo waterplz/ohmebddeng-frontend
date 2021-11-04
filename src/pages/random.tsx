@@ -109,7 +109,8 @@ const Container = styled.div`
 `;
 
 const Buttons = styled.div`
-  width: 343px;
+  width: 100%;
+  max-width: 343px;
   margin-top: 181px;
   display: flex;
   flex-direction: column;
