@@ -15,7 +15,6 @@ interface DrawerProps {
 const Drawer = ({ closeDrawerHandler, isOpen = false }: DrawerProps) => {
   const router = useRouter();
   const handleClickReTest = () => {
-    // 테스트 다시 하는 로직
     router.push(ROUTES.LEVEL_TEST);
   };
 
@@ -56,7 +55,7 @@ const Container = styled.div`
   flex-direction: column;
   position: fixed;
   top: 0;
-  left: 0;
+  right: 0;
   width: 300px;
   height: 100%;
   background-color: ${({ theme }) => theme.colors.grey50};
