@@ -35,7 +35,6 @@ const Label = styled.label`
   & div {
     display: block;
     cursor: pointer;
-    margin: 0;
   }
   & div.name {
     margin-top: 4px;
