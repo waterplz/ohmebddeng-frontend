@@ -133,7 +133,10 @@ const Container = styled.div`
   flex-direction: column;
   margin: 0 11.5px;
   font-weight: 800;
-  gap: 30px 0;
   overflow: hidden;
+
+  & > * {
+    margin: 15px 0;
+  }
 `;
 export default Main;

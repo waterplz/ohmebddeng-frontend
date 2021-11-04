@@ -18,13 +18,14 @@ const SpicyLevelInput = ({
   return (
     <Label>
       <input type={type ?? 'radio'} value={name} checked={checked} {...rest} />
-      <SpicyLevelIcon level={name} checked={checked} />
+      <SpicyLevelIcon level={name} checked={checked} width={40} height={40} />
       <div className={'name' + (checked ? '' : ' disabled')}>{name}</div>
     </Label>
   );
 };
 
 const Label = styled.label`
+  margin: 0 9px;
   & input {
     position: absolute;
     opacity: 0;
@@ -36,7 +37,7 @@ const Label = styled.label`
     cursor: pointer;
   }
   & div.name {
-    margin-top: 7px;
+    margin-top: 4px;
     display: flex;
     justify-content: center;
   }

@@ -44,7 +44,7 @@ const Review: NextPage = () => {
 
   useEffect(() => {
     for (const [_, { level, taste }] of Array.from(reviews.entries())) {
-      if (!level || !taste || !taste.size) {
+      if (!level || (level !== LEVEL.모름 && (!taste || !taste.size))) {
         setIsTestDone(false);
         return;
       }
@@ -62,7 +62,6 @@ const Review: NextPage = () => {
       const tagIds = Array.from(taste);
       result.push({ hotLevel: level, tagIds, foodId: foodInfo.get(foodName) });
     });
-    console.log(result);
     mutation.mutate(result);
   };
 
@@ -71,7 +70,12 @@ const Review: NextPage = () => {
       const level = (event.target as HTMLInputElement).value as LEVEL;
       setReviews(
         (prev) =>
-          new Map(prev.set(name, { level, taste: prev.get(name)?.taste }))
+          new Map(
+            prev.set(name, {
+              level,
+              taste: level === LEVEL.모름 ? new Set() : prev.get(name)?.taste,
+            })
+          )
       );
     };
 
@@ -101,16 +105,17 @@ const Review: NextPage = () => {
               const data = reviews.get(foodName);
               return (
                 <ReviewSection key={foodName}>
-                  <div>
+                  <TitleContainer>
                     <Image src={svg_0} alt="thumnail" />
                     <h2>{foodName}</h2>
-                  </div>
+                  </TitleContainer>
                   <SpicyLevelForm
                     level={data?.level}
                     onChange={handleCheckLevel(foodName)}
                   />
                   <Divider>
                     <TasteForm
+                      disabled={data?.level === LEVEL.모름}
                       taste={data?.taste}
                       onChange={handleCheckTaste(foodName)}
                     />
@@ -143,30 +148,36 @@ const ReviewContainer = styled.div`
   margin: 16px 0 80px;
   display: flex;
   flex-direction: column;
-  gap: 20px 0;
+
+  & section:not(:last-child) {
+    margin-bottom: 20px;
+  }
 `;
 
 const Divider = styled.div`
+  margin-top: 20px;
   border-top: ${({ theme }) => `2px solid ${theme.colors.grey40}`};
 `;
 
 const ReviewSection = styled.section`
   display: flex;
   flex-direction: column;
-  gap: 40px 0;
   width: 100%;
-  min-height: 315px;
+  height: 100%;
+  max-height: 315px;
   background-color: rgba(255, 255, 255, 0.1);
   border-radius: 16px;
-  padding: 24px 16px;
+  padding: 17px 16px 16px 16px;
+`;
 
-  & div {
-    display: flex;
-    align-items: center;
-
-    & h2 {
-      margin-left: 8px;
-    }
+const TitleContainer = styled.div`
+  display: flex;
+  align-items: center;
+  margin-top: 4px;
+  margin-bottom: 20px;
+  & h2 {
+    margin-left: 8px;
+    line-height: 1;
   }
 `;
 
