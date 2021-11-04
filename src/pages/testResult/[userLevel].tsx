@@ -43,7 +43,6 @@ const TestResult: NextPage = () => {
       );
     }
   };
-
   useEffect(() => {
     setTimeout(() => {
       setIsResult(true);
