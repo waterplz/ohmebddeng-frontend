@@ -10,6 +10,7 @@ import {
   CreatedReview,
 } from '@/api/initialReview';
 import { LevelTestFoods } from '@/api/levelTest';
+import { getUserQuery, User } from '@/api/user';
 import { Header, SpicyLevelForm } from '@/components/Common';
 import Button from '@/components/Input/Button';
 import { TasteForm } from '@/components/Review';
@@ -26,9 +27,11 @@ const Review: NextPage = () => {
   const { data: foods } = useQuery<LevelTestFoods>(['initialReviewFoods'], () =>
     getInitialReviewFood()
   );
+  const { data: user } = useQuery<User>(['getUser'], getUserQuery);
 
   const mutation = useMutation(postInitialReviewsQuery, {
-    onSuccess: () => router.push(ROUTES.TEST_RESULT),
+    onSuccess: () =>
+      router.push(`${ROUTES.TEST_RESULT}/${user?.data.userLevel.level}`),
   });
 
   useEffect(() => {
@@ -124,15 +127,16 @@ const Review: NextPage = () => {
               );
             })}
         </ReviewContainer>
-        <Button
-          buttonType={'contained'}
-          color={isTestDone ? 'red' : 'grey'}
-          rounded={false}
-          onClick={handleSubmit}
-        >
-          완료
-        </Button>
       </Container>
+      <Button
+        fullWidth
+        buttonType={'contained'}
+        color={isTestDone ? 'red' : 'grey'}
+        rounded={false}
+        onClick={handleSubmit}
+      >
+        완료
+      </Button>
     </>
   );
 };
