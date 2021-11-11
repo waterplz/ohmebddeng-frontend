@@ -15,7 +15,27 @@ interface DrawerProps {
 const Drawer = ({ closeDrawerHandler, isOpen = false }: DrawerProps) => {
   const router = useRouter();
   const handleClickReTest = () => {
-    router.push(ROUTES.LEVEL_TEST);
+    router.push(ROUTES.HOME);
+  };
+
+  const shareMyResult = async () => {
+    if (navigator.share) {
+      const title = document.title;
+      const url = document.location.href;
+      navigator
+        .share({
+          title,
+          url,
+        })
+        .then(() => {
+          console.log('Thanks for sharing!');
+        })
+        .catch(console.error);
+    } else {
+      alert(
+        '공유하기를 지원하지 않는 브라우저입니다. 다른 브라우저에서 공유해주세요.'
+      );
+    }
   };
 
   return isOpen ? (
@@ -36,7 +56,7 @@ const Drawer = ({ closeDrawerHandler, isOpen = false }: DrawerProps) => {
         </Header>
         <ListContainer>
           <li onClick={handleClickReTest}>테스트 다시하기</li>
-          <li>내 맵레벨 공유하기</li>
+          <li onClick={shareMyResult}>내 맵레벨 공유하기</li>
           <li>
             <Link href={ROUTES.INQURY}>
               <a>문의하기</a>
