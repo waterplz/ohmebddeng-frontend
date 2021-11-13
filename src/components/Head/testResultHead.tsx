@@ -1,4 +1,4 @@
-import { NextSeo } from 'next-seo';
+import Head from 'next/head';
 import { useMemo } from 'react';
 
 interface TestResultHeadProps {
@@ -33,24 +33,20 @@ export default function TestResultHead({ level }: TestResultHeadProps) {
   const url = 'https://ohmebddeng.kr';
 
   return (
-    <NextSeo
-      title={title}
-      description={description}
-      canonical="https://ohmebddeng.kr"
-      openGraph={{
-        url,
-        title,
-        description,
-        images: [
-          {
-            url: `${url}/assets/OpenGraph/level${level}.png`,
-            width: 1200,
-            height: 630,
-            alt: '오맵땡',
-            type: 'image/png',
-          },
-        ],
-      }}
-    />
+    <Head>
+      <title>{title}</title>
+      <meta name="description" content={description} />
+      <link rel="canonical" href={url} />
+      <meta property="og:type" content="website" />
+      <meta property="og:title" content={title} />
+      <meta property="og:description" content={description} />
+      <meta property="og:url" content={url} />
+      <meta
+        property="og:image"
+        content={`${url}/assets/OpenGraph/level${level}.png`}
+      />
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" />
+    </Head>
   );
 }
