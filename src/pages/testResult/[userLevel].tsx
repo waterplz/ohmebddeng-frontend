@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import type { NextPage } from 'next';
+import { GetStaticPaths, GetStaticProps } from 'next';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
@@ -10,7 +10,26 @@ import { ROUTES } from '@/constants';
 import { FOOD_IMAGE } from '@/constants/image';
 import share from 'public/assets/TestResult/share.svg';
 
-const TestResult: NextPage = () => {
+export const getStaticPaths: GetStaticPaths = async () => {
+  return {
+    paths: [
+      { params: { userLevel: '1' } },
+      { params: { userLevel: '2' } },
+      { params: { userLevel: '3' } },
+      { params: { userLevel: '4' } },
+      { params: { userLevel: '5' } },
+    ],
+    fallback: false,
+  };
+};
+
+export const getStaticProps: GetStaticProps = async () => {
+  return {
+    props: {},
+  };
+};
+
+const TestResult = () => {
   const [isResult, setIsResult] = useState<boolean>(false);
   const router = useRouter();
   const { userLevel } = router.query;
