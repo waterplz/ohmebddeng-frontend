@@ -3,6 +3,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
+import { useQuery } from 'react-query';
+import { getUserQuery, User } from '@/api/user';
 import { ROUTES } from '@/constants';
 import close from '@public/assets/common/close.svg';
 import logo from '@public/images/logo.png';
@@ -14,14 +16,20 @@ interface DrawerProps {
 
 const Drawer = ({ closeDrawerHandler, isOpen = false }: DrawerProps) => {
   const router = useRouter();
+  const { data: user } = useQuery<User>(['getUser'], getUserQuery);
+
   const handleClickReTest = () => {
     router.push(ROUTES.HOME);
   };
 
   const shareMyResult = async () => {
+    if (!user) {
+      return;
+    }
+
     if (navigator.share) {
       const title = document.title;
-      const url = document.location.href;
+      const url = `${window.location.origin}${ROUTES.TEST_RESULT}/${user.data.userLevel.level}`;
       navigator
         .share({
           title,
