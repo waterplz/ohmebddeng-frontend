@@ -13,7 +13,7 @@ import logo from '@public/images/logo.png';
 import userLevel5 from '@public/images/user-level-5.png';
 
 export const getServerSideProps = async () => {
-  const userCount = await getUserCount();
+  const userCount = (await getUserCount()) ?? 0;
 
   return {
     props: { userCount },
@@ -26,7 +26,6 @@ const Home = ({
   const router = useRouter();
   const theme = useTheme();
   const [showTest, setShowTest] = useState(false);
-
   const handleClickDoTest = useCallback(() => {
     setShowTest(true);
   }, []);
@@ -37,8 +36,8 @@ const Home = ({
 
   const { data } = useQuery<UserCount>('getUserCount', getUserCount, {
     initialData: userCount,
+    useErrorBoundary: true,
   });
-
   return (
     <>
       {showTest ? (

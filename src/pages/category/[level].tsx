@@ -5,10 +5,10 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useCallback, useState } from 'react';
 import { useQuery } from 'react-query';
-import { Foods, getFoods } from '@/api/food';
+import { getFoods } from '@/api/food';
 import { Header } from '@/components/Common';
 import { ROUTES } from '@/constants';
-import { TASTE_LEVEL } from '@/types';
+import { Food, TASTE_LEVEL } from '@/types';
 import arrow_under from '@public/assets/common/arrow_under.svg';
 
 const CategoryByTaste: NextPage = () => {
@@ -17,7 +17,7 @@ const CategoryByTaste: NextPage = () => {
   const [showFilter, setShowFilter] = useState(false);
   const [category, setCategory] = useState<string | undefined>(undefined);
 
-  const { data } = useQuery<Foods>(
+  const { data: foods } = useQuery<Food[]>(
     ['getFoods', category, level],
     () => getFoods({ category, hotLevel: level as TASTE_LEVEL }),
     { enabled: !!level }
@@ -89,7 +89,7 @@ const CategoryByTaste: NextPage = () => {
           </div>
         </FilterContainer>
         <Lists>
-          {data?.data.map((food) => (
+          {foods?.map((food) => (
             <FoodItem key={food.id} onClick={handleClickFood(food.id)}>
               <Image
                 src={food.imageUrl}

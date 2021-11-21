@@ -11,7 +11,7 @@ import { ROUTES } from '@/constants';
 
 const TestResult: NextPage = () => {
   const [reRender, setReRender] = useState<number>(0);
-  const { status, data } = useQuery<RandomFoodType>(
+  const { status, data: randomFood } = useQuery<RandomFoodType>(
     ['getUserCount', reRender],
     getRandomFood
   );
@@ -32,18 +32,18 @@ const TestResult: NextPage = () => {
       <Container>
         {status !== 'loading' ? (
           <div className="random__content">
-            {data && (
+            {randomFood && (
               <Image
-                src={data?.imageUrl}
+                src={randomFood?.imageUrl}
                 alt="error"
                 width="124"
                 height="193"
               />
             )}
             <div className="random__content__text">
-              <h2>{data && data.name}</h2>
+              <h2>{randomFood?.name}</h2>
               <h2 className="random__content__text__sub">
-                {data && data.subName}
+                {randomFood?.subName}
               </h2>
             </div>
           </div>
