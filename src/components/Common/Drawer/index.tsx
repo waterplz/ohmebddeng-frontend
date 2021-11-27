@@ -67,7 +67,13 @@ const Drawer = ({ closeDrawerHandler, isOpen = false }: DrawerProps) => {
           <li onClick={shareMyResult}>내 맵레벨 공유하기</li>
           <li>
             <Link href={ROUTES.INQURY}>
-              <a>문의하기</a>
+              <a
+                href="https://forms.gle/RvaYSGZ1dTJnhEv59"
+                target="_blank"
+                rel="noreferrer"
+              >
+                문의하기
+              </a>
             </Link>
           </li>
         </ListContainer>
