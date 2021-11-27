@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const baseURL =
-  process.env.APP_ENV === 'prod'
+  process.env.NEXT_PUBLIC_APP_ENV === 'prod'
     ? 'https://api.ohmebddeng.kr/v1'
     : 'https://api-dev.ohmebddeng.kr/v1';
 
