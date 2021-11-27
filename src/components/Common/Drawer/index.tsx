@@ -3,6 +3,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
+import { useQuery } from 'react-query';
+import { getUserQuery, User } from '@/api/user';
 import { ROUTES } from '@/constants';
 import close from '@public/assets/common/close.svg';
 import logo from '@public/images/logo.png';
@@ -14,9 +16,34 @@ interface DrawerProps {
 
 const Drawer = ({ closeDrawerHandler, isOpen = false }: DrawerProps) => {
   const router = useRouter();
+  const { data: user } = useQuery<User>(['getUser'], getUserQuery);
+
   const handleClickReTest = () => {
-    // 테스트 다시 하는 로직
-    router.push(ROUTES.LEVEL_TEST);
+    router.push(ROUTES.HOME);
+  };
+
+  const shareMyResult = async () => {
+    if (!user) {
+      return;
+    }
+
+    if (navigator.share) {
+      const title = document.title;
+      const url = `${window.location.origin}${ROUTES.TEST_RESULT}/${user.data.userLevel.level}`;
+      navigator
+        .share({
+          title,
+          url,
+        })
+        .then(() => {
+          console.log('Thanks for sharing!');
+        })
+        .catch(console.error);
+    } else {
+      alert(
+        '공유하기를 지원하지 않는 브라우저입니다. 다른 브라우저에서 공유해주세요.'
+      );
+    }
   };
 
   return isOpen ? (
@@ -37,7 +64,7 @@ const Drawer = ({ closeDrawerHandler, isOpen = false }: DrawerProps) => {
         </Header>
         <ListContainer>
           <li onClick={handleClickReTest}>테스트 다시하기</li>
-          <li>내 맵레벨 공유하기</li>
+          <li onClick={shareMyResult}>내 맵레벨 공유하기</li>
           <li>
             <Link href={ROUTES.INQURY}>
               <a>문의하기</a>
@@ -56,7 +83,7 @@ const Container = styled.div`
   flex-direction: column;
   position: fixed;
   top: 0;
-  left: 0;
+  right: 0;
   width: 300px;
   height: 100%;
   background-color: ${({ theme }) => theme.colors.grey50};
