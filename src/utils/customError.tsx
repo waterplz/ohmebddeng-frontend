@@ -1,7 +1,9 @@
-export default class CustomError extends Error {
-  statusCode: number;
+export type StatusCode = 200 | 400 | 401 | 404 | 500;
 
-  constructor(statusCode: number) {
+export default class CustomError extends Error {
+  statusCode: StatusCode;
+
+  constructor(statusCode: StatusCode) {
     super();
     this.statusCode = statusCode;
   }

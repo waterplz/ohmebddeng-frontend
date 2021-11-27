@@ -38,6 +38,7 @@ const Home = ({
     initialData: userCount,
     useErrorBoundary: true,
   });
+
   return (
     <>
       {showTest ? (
@@ -133,7 +134,7 @@ const SpeachBubble = styled.div`
   background-repeat: no-repeat;
 `;
 
-const Skip = styled.span`
+export const Skip = styled.span`
   margin-top: 36px;
   width: 100%;
   display: inline-block;

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import CustomError from '@/utils/customError';
+import CustomError, { StatusCode } from '@/utils/customError';
 
 export const baseURL =
   process.env.NEXT_PUBLIC_APP_ENV === 'prod'
@@ -16,7 +16,7 @@ const apiClient = axios.create({
 
 export type Response<T> = {
   data: T;
-  statusCode: number;
+  statusCode: StatusCode;
   message: string;
 };
 
@@ -30,7 +30,6 @@ const fetchWrap = async <T>({
   options?: {};
 }): Promise<Response<T>> => {
   const { data } = await apiClient[method]<Response<T>>(url, options);
-  data.statusCode = 400;
 
   if (data.statusCode !== 200) {
     throw new CustomError(data.statusCode);

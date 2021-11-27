@@ -1,52 +1,88 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import Image from 'next/image';
-import React from 'react';
+import { useRouter } from 'next/router';
+import React, { useCallback } from 'react';
 import Button from '@/components/Input/Button';
+import { ROUTES } from '@/constants';
+import { Skip } from '@/pages';
+import { StatusCode } from '@/utils/customError';
 import error_image from 'public/assets/Error/error.svg';
 
-interface Message {
+interface ErrorViewProps {
   message: string;
+  statusCode: StatusCode;
 }
 
-const ErrorView = ({ message }: Message) => {
+const ErrorView = ({ message, statusCode }: ErrorViewProps) => {
+  const router = useRouter();
+
+  const handleClickBack = useCallback(() => {
+    router.back();
+  }, [router]);
+
+  //TODO 레벨테스트 이동시 테스트페이지를 따로 만드는지, HOME으로 가는지?
+  const handleClickGoLevelTest = useCallback(() => {
+    router.push(ROUTES.LEVEL_TEST);
+  }, [router]);
+
   return (
     <Container>
       <p>{message}</p>
       <Image src={error_image} alt="error" layout="fixed" />
-      <Button
-        buttonType="contained"
-        color="red"
-        rounded
-        fullWidth
+      <div
         css={css`
-          margin-top: 3rem;
-          width: 100%;
+          position: absolute;
+          left: 16px;
+          right: 16px;
+          bottom: 66px;
         `}
       >
-        button 1
-      </Button>
-      <Button
-        buttonType="outline"
-        color="green"
-        rounded
-        fullWidth
-        css={css`
-          margin-top: 3rem;
-          width: 100%;
-        `}
-      >
-        button 2
-      </Button>
+        <Button
+          buttonType="contained"
+          color="red"
+          rounded
+          fullWidth
+          onClick={
+            statusCode === 401 ? handleClickGoLevelTest : handleClickBack
+          }
+          css={css`
+            margin-top: 3rem;
+            width: 100%;
+          `}
+        >
+          {statusCode === 401
+            ? '레벨 테스트 하러 가기'
+            : '이전 페이지로 돌아가기'}
+        </Button>
+        <Skip
+          onClick={() => {
+            statusCode === 401 ? handleClickBack() : '';
+          }}
+        >
+          {statusCode === 401 ? (
+            '이전 페이지로 돌아가기'
+          ) : (
+            // TODO 문의하기 링크 추가
+            <a href="" target="_blank">
+              문의하기
+            </a>
+          )}
+        </Skip>
+      </div>
     </Container>
   );
 };
 
 const Container = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 72px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
   & p {
     font-size: 17px;
     font-weight: 700;
