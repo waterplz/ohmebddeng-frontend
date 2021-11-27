@@ -1,4 +1,5 @@
 import React, { Component, ErrorInfo, ReactNode } from 'react';
+import CustomError, { StatusCode } from '@/utils/customError';
 import ErrorView from '../ErrorView';
 
 interface Props {
@@ -8,15 +9,30 @@ interface Props {
 
 interface State {
   hasError: boolean;
+  statusCode: StatusCode;
+  message: string;
 }
 
 export default class ErrorBoundary extends Component<Props, State> {
   public state: State = {
     hasError: false,
+    statusCode: 500,
+    message: '펑! 서버가 터졌어요.\n개발자가 빠르게 해결할거에요.',
   };
 
   public static getDerivedStateFromError(_: Error): State {
-    return { hasError: true };
+    if (_ instanceof CustomError) {
+      return {
+        hasError: true,
+        statusCode: _.statusCode,
+        message: _.getMessage(),
+      };
+    }
+    return {
+      hasError: true,
+      statusCode: 500,
+      message: '펑! 서버가 터졌어요.\n개발자가 빠르게 해결할거에요.',
+    };
   }
 
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
@@ -24,13 +40,19 @@ export default class ErrorBoundary extends Component<Props, State> {
   }
 
   public render() {
-    if (this.state.hasError) {
-      return this.props.fallback ? (
-        <>{this.props.fallback}</>
-      ) : (
-        <ErrorView message="test" />
-      );
+    if (!this.state.hasError) {
+      return this.props.children;
     }
-    return this.props.children;
+
+    if (this.props.fallback) {
+      return <>{this.props.fallback}</>;
+    }
+
+    return (
+      <ErrorView
+        message={this.state.message}
+        statusCode={this.state.statusCode}
+      />
+    );
   }
 }
