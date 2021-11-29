@@ -57,17 +57,26 @@ const UserLevelNumber: { [index: number]: USER_LEVEL } = {
   5: USER_LEVEL.맵마스터,
 };
 
-const sliderSetting = {
-  dots: true,
-};
-
 const Main: NextPage = () => {
   const router = useRouter();
   const [drawerOpend, setDrawerOpend] = useState(false);
   const { data: user } = useQuery<User>(['getUser'], getUserQuery);
+  const [slideIndex, setSlideIndex] = useState(0);
 
   const handleDrawerOpen = () => setDrawerOpend(true);
   const hanldeDrawerClose = () => setDrawerOpend(false);
+
+  const sliderSetting = {
+    dots: true,
+    beforeChange: (prev: number, next: number) => {
+      setSlideIndex(next);
+    },
+    customPaging: (index: number) => (
+      <ClickArea>
+        <Dots index={index} slideIndex={slideIndex} />
+      </ClickArea>
+    ),
+  };
 
   const handleClickRandom = useCallback(() => {
     router.push(ROUTES.RANDOM);
@@ -138,5 +147,23 @@ const Container = styled.div`
   & > * {
     margin: 15px 0;
   }
+  .slick-dots li {
+    width: 9px;
+  }
 `;
+
+const ClickArea = styled.div`
+  width: 20px;
+  height: 10px;
+`;
+
+const Dots = styled.div<{ index: number; slideIndex: number }>`
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #ff5252;
+  background-color: ${({ index, slideIndex }) =>
+    index === slideIndex ? '#FF5252' : '#636366'};
+`;
+
 export default Main;

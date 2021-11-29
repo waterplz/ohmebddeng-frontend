@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const baseURL = 'https://api.ohmebddeng.kr/v1';
+export const baseURL = 'https://api-dev.ohmebddeng.kr/v1';
 
 export const apiClient = axios.create({
   baseURL,
