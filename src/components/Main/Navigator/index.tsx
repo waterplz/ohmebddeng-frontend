@@ -28,11 +28,16 @@ const iconByLevelDisabled = {
 
 const Navigator = () => {
   const router = useRouter();
+  const [navigateReady, setNavigateReady] = useState<Boolean>(false);
   const [selectLevel, setSelectLevel] = useState<TASTE_LEVEL | undefined>(
     undefined
   );
+
   const handleNavigate = (level: TASTE_LEVEL) => () => {
+    if (navigateReady) return;
+
     const timeToDelay = 0.5 * 1000;
+    setNavigateReady(true);
     setSelectLevel(level);
     setTimeout(() => {
       router.push(`${ROUTES.CATEGORY}/${level}`);
