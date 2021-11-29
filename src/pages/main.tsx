@@ -68,6 +68,7 @@ const Main: NextPage = () => {
 
   const sliderSetting = {
     dots: true,
+    arrows: false,
     beforeChange: (prev: number, next: number) => {
       setSlideIndex(next);
     },
@@ -114,8 +115,10 @@ const Main: NextPage = () => {
         {user ? (
           <>
             <ProfileCard level={UserLevelNumber[user.data.userLevel.level]} />
-            <Category {...Recommend} />
-            <Category {...Random} />
+            <CategoryList>
+              <Category {...Recommend} />
+              <Category {...Random} />
+            </CategoryList>
           </>
         ) : (
           <>
@@ -124,12 +127,14 @@ const Main: NextPage = () => {
                 <ProfileCard level={level} key={level} />
               ))}
             </Slider>
-            <Category
-              disabled
-              disabledText={'레벨테스트 받으면 맞춤형 음식 추천이!'}
-              title={Recommend.title}
-              contents={Recommend.contents.slice(0, 2)}
-            />
+            <CategoryList>
+              <Category
+                disabled
+                disabledText={'레벨테스트 받으면 맞춤형 음식 추천이!'}
+                title={Recommend.title}
+                contents={Recommend.contents.slice(0, 2)}
+              />
+            </CategoryList>
           </>
         )}
       </Container>
@@ -140,7 +145,6 @@ const Main: NextPage = () => {
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 0 11.5px;
   font-weight: 800;
   overflow: hidden;
 
@@ -150,6 +154,10 @@ const Container = styled.div`
   .slick-dots li {
     width: 9px;
   }
+`;
+
+const CategoryList = styled.div`
+  margin: 0 11.5px;
 `;
 
 const ClickArea = styled.div`
