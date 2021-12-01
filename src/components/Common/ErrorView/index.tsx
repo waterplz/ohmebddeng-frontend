@@ -23,7 +23,7 @@ const ErrorView = ({ message, statusCode }: ErrorViewProps) => {
 
   //TODO 레벨테스트 이동시 테스트페이지를 따로 만드는지, HOME으로 가는지?
   const handleClickGoLevelTest = useCallback(() => {
-    router.push(ROUTES.LEVEL_TEST);
+    router.push(ROUTES.HOME);
   }, [router]);
 
   return (
