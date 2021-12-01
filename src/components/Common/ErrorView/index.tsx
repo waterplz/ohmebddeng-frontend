@@ -28,8 +28,14 @@ const ErrorView = ({ message, statusCode }: ErrorViewProps) => {
 
   return (
     <Container>
-      <p>{message}</p>
-      <Image src={error_image} alt="error" layout="fixed" />
+      <div
+        css={css`
+          padding-bottom: 50px;
+        `}
+      >
+        <p>{message}</p>
+        <Image src={error_image} alt="error" layout="fixed" />
+      </div>
       <div
         css={css`
           position: absolute;
@@ -82,6 +88,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
 
   & p {
     font-size: 17px;
