@@ -8,6 +8,7 @@ import { useQuery } from 'react-query';
 import { getFoods } from '@/api/food';
 import { Header } from '@/components/Common';
 import FoodList from '@/components/Common/FoodList';
+import Tabs from '@/components/Common/Tabs';
 import { ROUTES } from '@/constants';
 import { Food, TASTE_LEVEL } from '@/types';
 import arrow_under from '@public/assets/common/arrow_under.svg';
@@ -24,7 +25,8 @@ const CategoryByTaste: NextPage = () => {
   );
 
   const handleClickTab = useCallback(
-    (level: TASTE_LEVEL) => () => {
+    (level: TASTE_LEVEL) => {
+      console.log(level);
       router.push(`${ROUTES.CATEGORY}/${level}`);
     },
     [router]
@@ -50,17 +52,12 @@ const CategoryByTaste: NextPage = () => {
         오늘 뭐가 땡겨?
       </Header>
       <Wrapper>
-        <Tabs>
-          {Object.values(TASTE_LEVEL).map((_level) => (
-            <Tab
-              key={_level}
-              active={_level === level}
-              onClick={handleClickTab(_level)}
-            >
-              {_level}
-            </Tab>
-          ))}
-        </Tabs>
+        <Tabs
+          tabs={Object.values(TASTE_LEVEL)}
+          activeTab={level as TASTE_LEVEL}
+          onTabClick={handleClickTab}
+        />
+
         <FilterContainer>
           <div
             css={css`
@@ -88,24 +85,6 @@ const CategoryByTaste: NextPage = () => {
 
 const Wrapper = styled.div`
   padding: 0 16px;
-`;
-const Tabs = styled.nav`
-  display: flex;
-`;
-const Tab = styled.button<{ active?: boolean }>`
-  padding: 13px 0;
-  flex: 1;
-  color: ${({ theme }) => theme.colors.grey20};
-  background-color: transparent;
-  border: none;
-  outline: none;
-
-  ${({ theme, active }) =>
-    active &&
-    css`
-      color: ${theme.colors.white};
-      border-bottom: 2px solid ${theme.colors.red};
-    `}
 `;
 const FilterContainer = styled.div`
   padding: 9px 0 0;

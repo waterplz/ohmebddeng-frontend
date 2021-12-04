@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosRequestConfig, AxiosResponse, Method } from 'axios';
 import CustomError, { StatusCode } from '@/utils/customError';
 
 export const baseURL =
@@ -25,11 +25,15 @@ const fetchWrap = async <T>({
   url,
   options,
 }: {
-  method: 'get' | 'post' | 'patch' | 'delete';
+  method: Method;
   url: string;
-  options?: {};
+  options?: AxiosRequestConfig;
 }): Promise<Response<T>> => {
-  const { data } = await apiClient[method]<Response<T>>(url, options);
+  const { data } = (await apiClient({
+    method,
+    url,
+    ...options,
+  })) as AxiosResponse<Response<T>>;
 
   if (data.statusCode !== 200) {
     throw new CustomError(data.statusCode);
@@ -37,13 +41,13 @@ const fetchWrap = async <T>({
   return data;
 };
 
-export const GET = <T>(url: string, options?: {}) =>
+export const GET = <T>(url: string, options?: AxiosRequestConfig) =>
   fetchWrap<T>({ method: 'get', url, options });
 
-export const POST = <T>(url: string, options?: {}) =>
+export const POST = <T>(url: string, options?: AxiosRequestConfig) =>
   fetchWrap<T>({ method: 'post', url, options });
 
-export const PATCH = <T>(url: string, options?: {}) =>
+export const PATCH = <T>(url: string, options?: AxiosRequestConfig) =>
   fetchWrap<T>({ method: 'patch', url, options });
 
 export const DELETE = <T>(url: string) =>
