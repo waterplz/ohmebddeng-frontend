@@ -1,11 +1,5 @@
-import { apiClient } from '@/api';
+import { GET } from '@/api';
 import { Food, TASTE_LEVEL } from '@/types';
-
-export interface Foods {
-  data: Food[];
-  statusCode: 200;
-  message: 'Success';
-}
 
 interface GetFoodsParams {
   category?: string;
@@ -13,7 +7,7 @@ interface GetFoodsParams {
 }
 
 export const getFoods = async ({ category, hotLevel }: GetFoodsParams) => {
-  const { data } = await apiClient.get<Foods>(`/food`, {
+  const { data } = await GET<Food[]>(`/food`, {
     params: { category, hotLevel },
   });
 

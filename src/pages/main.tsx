@@ -114,11 +114,9 @@ const Main: NextPage = () => {
       <Container>
         {user ? (
           <>
-            <ProfileCard level={UserLevelNumber[user.data.userLevel.level]} />
-            <CategoryList>
-              <Category {...Recommend} />
-              <Category {...Random} />
-            </CategoryList>
+            <ProfileCard level={UserLevelNumber[user.userLevel.level]} />
+            <Category {...Recommend} />
+            <Category {...Random} />
           </>
         ) : (
           <>
