@@ -7,6 +7,7 @@ import React, { useCallback, useState } from 'react';
 import { useQuery } from 'react-query';
 import { getFoods } from '@/api/food';
 import { Header } from '@/components/Common';
+import FoodList from '@/components/Common/FoodList';
 import { ROUTES } from '@/constants';
 import { Food, TASTE_LEVEL } from '@/types';
 import arrow_under from '@public/assets/common/arrow_under.svg';
@@ -19,7 +20,7 @@ const CategoryByTaste: NextPage = () => {
   const { data: foods } = useQuery<Food[]>(
     ['getFoods', category, level],
     () => getFoods({ category, hotLevel: level as TASTE_LEVEL }),
-    { enabled: !!level }
+    { enabled: !!level, useErrorBoundary: true }
   );
 
   const handleClickTab = useCallback(
@@ -72,31 +73,12 @@ const CategoryByTaste: NextPage = () => {
               ))}
             </FilterSelector>
             <ArrowIcon>
-              <Image src={arrow_under} width={14} height={14} />
+              <Image src={arrow_under} width={14} height={14} alt="" />
             </ArrowIcon>
           </div>
         </FilterContainer>
-        <Lists>
-          {foods?.map((food) => (
-            <FoodItem key={food.id} onClick={handleClickFood(food.id)}>
-              <Image
-                src={food.imageUrl}
-                alt={food.name}
-                width={52}
-                height={84}
-              />
-              <FoodInfo>
-                <Name>
-                  {food.name} {food.subName}
-                </Name>
-                <Info>
-                  Lorem ipsum dolor, <br />
-                  sit amet consectetur adipisicing elit.
-                </Info>
-              </FoodInfo>
-            </FoodItem>
-          ))}
-        </Lists>
+
+        <FoodList foods={foods} onClickFood={handleClickFood} />
       </Wrapper>
     </div>
   );
@@ -124,7 +106,7 @@ const Tab = styled.button<{ active?: boolean }>`
     `}
 `;
 const FilterContainer = styled.div`
-  padding: 9px 0;
+  padding: 9px 0 0;
   text-align: right;
   margin-top: 12px;
 
@@ -151,32 +133,6 @@ const ArrowIcon = styled.div`
   position: absolute;
   top: 1px;
   right: 0;
-`;
-const Lists = styled.ul`
-  padding: 0 0 0 14px;
-  display: flex;
-  flex-direction: column;
-
-  & > * + * {
-    margin-top: 44px;
-  }
-`;
-const FoodItem = styled.div`
-  display: flex;
-`;
-const FoodInfo = styled.div`
-  margin-top: 10px;
-  margin-left: 26px;
-  text-align: left;
-`;
-const Name = styled.div`
-  margin-bottom: 8px;
-  font-weight: bold;
-  font-size: 15px;
-`;
-const Info = styled.div`
-  font-size: 13px;
-  color: #8e8e93;
 `;
 
 export default CategoryByTaste;
