@@ -41,8 +41,8 @@ const Recommend = {
       color: '#FF9654',
     },
     {
-      textFirst: '#알싸한 음식',
-      textSecond: '모아보기',
+      textFirst: '오늘의',
+      textSecond: '맛',
       image: svg_3,
       color: '#FFC56B',
     },

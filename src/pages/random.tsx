@@ -12,7 +12,7 @@ import { ROUTES } from '@/constants';
 const TestResult: NextPage = () => {
   const [reRender, setReRender] = useState<number>(0);
   const { status, data: randomFood } = useQuery<RandomFoodType>(
-    ['getUserCount', reRender],
+    ['getRandomFood', reRender],
     getRandomFood
   );
 
