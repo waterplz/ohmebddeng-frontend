@@ -16,8 +16,7 @@ export const postLevelTestQuery = async (
 ) => {
   const userId = localStorage.getItem(userIdKey);
   const { data } = await POST<User>(`/user/level`, {
-    userId,
-    answers,
+    data: { userId, answers },
   });
   return data;
 };

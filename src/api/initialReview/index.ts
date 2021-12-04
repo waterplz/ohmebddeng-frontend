@@ -17,8 +17,7 @@ export const getInitialReviewFood = async () => {
 export const postInitialReviewQuery = async (review: CreatedReview) => {
   const userId = localStorage.getItem(userIdKey);
   const { data } = await POST<User>('/review/food', {
-    userId,
-    ...review,
+    data: { userId, ...review },
   });
   return data;
 };
@@ -27,8 +26,7 @@ export const postInitialReviewQuery = async (review: CreatedReview) => {
 export const postInitialReviewsQuery = async (reviewList: CreatedReview[]) => {
   const userId = localStorage.getItem(userIdKey);
   const { data } = await POST<User>('/review/foods', {
-    userId,
-    reviewList,
+    data: { userId, reviewList },
   });
   return data;
 };
