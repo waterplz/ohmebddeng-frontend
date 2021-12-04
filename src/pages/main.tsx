@@ -75,6 +75,7 @@ const Main: NextPage = () => {
           textSecond: '추천 라면',
           image: svg_1,
           color: '#EE726E',
+          onClick: () => router.push(ROUTES.오늘의추천_라면),
         },
         {
           textFirst: '맵마스터들의',
