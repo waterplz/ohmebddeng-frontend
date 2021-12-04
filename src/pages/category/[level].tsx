@@ -46,7 +46,9 @@ const CategoryByTaste: NextPage = () => {
 
   return (
     <div>
-      <Header type="center">오늘 뭐가 땡겨?</Header>
+      <Header type="center" showBackButton>
+        오늘 뭐가 땡겨?
+      </Header>
       <Wrapper>
         <Tabs>
           {Object.values(TASTE_LEVEL).map((_level) => (
