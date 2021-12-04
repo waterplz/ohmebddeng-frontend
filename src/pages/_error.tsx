@@ -1,29 +1,13 @@
-import styled from '@emotion/styled';
-import Image from 'next/image';
 import React from 'react';
-import error_image from 'public/assets/Error/error.svg';
+import ErrorView from '@/components/Common/ErrorView';
 
 const Error = () => {
   return (
-    <Container>
-      <p>.... 에러가 떴네요!</p>
-      <Image src={error_image} alt="error" layout="fixed" />
-    </Container>
+    <ErrorView
+      message={'펑! 서버가 터졌어요.\n개발자가 빠르게 해결할거에요.'}
+      statusCode={500}
+    />
   );
 };
-
-const Container = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-
-  & p {
-    font-size: 17px;
-    font-weight: 700;
-    margin-bottom: 48px;
-    color: ${({ theme }) => theme.colors.white};
-  }
-`;
 
 export default Error;

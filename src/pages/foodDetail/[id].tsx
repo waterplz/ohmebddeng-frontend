@@ -2,17 +2,16 @@ import styled from '@emotion/styled';
 import type { NextPage } from 'next';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useQuery } from 'react-query';
 import {
   getFoodDetail,
   getFoodCountsQuery,
   FoodCounts,
-  FoodDetails,
 } from '@/api/foodDetail';
 import { Header, FoodOverview } from '@/components/Common';
 import { SpicyEvaluation, TasteEvaluation } from '@/components/FoodDetail';
-import { USER_LEVEL } from '@/types';
+import { Food, USER_LEVEL } from '@/types';
 import arrow_under from 'public/assets/common/arrow_under.svg';
 
 const FoodDetail: NextPage = () => {
@@ -29,7 +28,7 @@ const FoodDetail: NextPage = () => {
     { enabled: !!id }
   );
 
-  const { data: food } = useQuery<FoodDetails>(
+  const { data: food } = useQuery<Food>(
     ['FoodDetails', id],
     () => getFoodDetail(id as string),
     { enabled: !!id }
@@ -42,21 +41,21 @@ const FoodDetail: NextPage = () => {
 
   return (
     <>
-      {food?.data && (
+      {food && (
         <>
           <Header type="center">
             <span>
-              {food.data.name}
+              {food.name}
               {'  '}
-              {food.data.subName}
+              {food.subName}
             </span>
           </Header>
           <Container>
             <FoodOverview
-              imageUrl={food.data.imageUrl}
-              id={food.data.name}
-              name={food.data.name}
-              subName={food.data.subName}
+              imageUrl={food.imageUrl}
+              id={food.name}
+              name={food.name}
+              subName={food.subName}
               nameVisable={false}
             />
             <UserLevelContainer>
@@ -80,15 +79,15 @@ const FoodDetail: NextPage = () => {
                 </DropDownContent>
               </div>
             </UserLevelContainer>
-            {counts?.data && (
+            {counts && (
               <>
                 <SpicyEvaluation
-                  countData={counts.data.hotLevelCount}
-                  totalCount={counts.data.totalHotLevelCount}
+                  countData={counts.hotLevelCount}
+                  totalCount={counts.totalHotLevelCount}
                 />
                 <TasteEvaluation
-                  countData={counts.data.tasteTagCount}
-                  totalCount={counts.data.totalTasteTagCount}
+                  countData={counts.tasteTagCount}
+                  totalCount={counts.totalTasteTagCount}
                 />
               </>
             )}
