@@ -2,6 +2,8 @@ import { ThemeProvider } from '@emotion/react';
 import type { AppProps } from 'next/app';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import ErrorBoundary from '@/components/Common/ErrorBoundary';
+import GTMBody from '@/components/Common/GTMBody';
+import GTMHead from '@/components/Common/GTMHead';
 import DefaultHead from '@/components/Head';
 import Layout from '@/components/Layout';
 import { initMSW } from '@/lib/msw';
@@ -14,6 +16,8 @@ const queryClient = new QueryClient();
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
+      <GTMHead />
+      <GTMBody />
       <DefaultHead />
       <GlobalStyle />
       <QueryClientProvider client={queryClient}>
