@@ -19,36 +19,6 @@ import svg_random from 'public/assets/Main/random.svg';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
-const Recommend = {
-  title: '오늘의 추천',
-  contents: [
-    {
-      textFirst: '오늘의',
-      textSecond: '추천 떡볶이',
-      image: svg_0,
-      color: '#FF5341',
-    },
-    {
-      textFirst: '오늘의',
-      textSecond: '추천 라면',
-      image: svg_1,
-      color: '#EE726E',
-    },
-    {
-      textFirst: '맵마스터들의',
-      textSecond: '추천 BEST 5',
-      image: svg_2,
-      color: '#FF9654',
-    },
-    {
-      textFirst: '오늘의',
-      textSecond: '맛',
-      image: svg_3,
-      color: '#FFC56B',
-    },
-  ],
-};
-
 const UserLevelNumber: { [index: number]: USER_LEVEL } = {
   1: USER_LEVEL.맵찔이,
   2: USER_LEVEL.맵초보,
@@ -87,6 +57,40 @@ const Main: NextPage = () => {
       height: 104,
     }),
     [handleClickRandom]
+  );
+
+  const Recommend = useMemo(
+    () => ({
+      title: '오늘의 추천',
+      contents: [
+        {
+          textFirst: '오늘의',
+          textSecond: '추천 떡볶이',
+          image: svg_0,
+          color: '#FF5341',
+        },
+        {
+          textFirst: '오늘의',
+          textSecond: '추천 라면',
+          image: svg_1,
+          color: '#EE726E',
+        },
+        {
+          textFirst: '맵마스터들의',
+          textSecond: '추천 BEST 5',
+          image: svg_2,
+          color: '#FF9654',
+        },
+        {
+          textFirst: '오늘의',
+          textSecond: '맛',
+          image: svg_3,
+          color: '#FFC56B',
+          onClick: () => alert('준비중 입니다.'),
+        },
+      ],
+    }),
+    []
   );
 
   return (
