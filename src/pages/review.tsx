@@ -9,13 +9,12 @@ import {
   postInitialReviewsQuery,
   CreatedReview,
 } from '@/api/initialReview';
-import { LevelTestFoods } from '@/api/levelTest';
 import { getUserQuery, User } from '@/api/user';
 import { Header, SpicyLevelForm } from '@/components/Common';
 import Button from '@/components/Input/Button';
 import { TasteForm } from '@/components/Review';
 import { ROUTES } from '@/constants';
-import { LEVEL, TASTE, ReviewState } from '@/types';
+import { LEVEL, TASTE, ReviewState, Food } from '@/types';
 import svg_0 from 'public/assets/FoodReview/0.svg';
 
 const foodInfo = new Map();
@@ -24,20 +23,20 @@ const Review: NextPage = () => {
   const router = useRouter();
   const [isTestDone, setIsTestDone] = useState(false);
   const [reviews, setReviews] = useState<Map<string, ReviewState>>(new Map());
-  const { data: foods } = useQuery<LevelTestFoods>(['initialReviewFoods'], () =>
+  const { data: foods } = useQuery<Food[]>(['initialReviewFoods'], () =>
     getInitialReviewFood()
   );
   const { data: user } = useQuery<User>(['getUser'], getUserQuery);
 
   const mutation = useMutation(postInitialReviewsQuery, {
     onSuccess: () =>
-      router.push(`${ROUTES.TEST_RESULT}/${user?.data.userLevel.level}`),
+      router.push(`${ROUTES.TEST_RESULT}/${user?.userLevel.level}`),
   });
 
   useEffect(() => {
-    if (foods?.data) {
+    if (foods) {
       const map = new Map();
-      foods.data.forEach(({ name, subName, id }) => {
+      foods.forEach(({ name, subName, id }) => {
         map.set(`${name} ${subName}`, {});
         foodInfo.set(`${name} ${subName}`, id);
         setReviews(map);
@@ -62,8 +61,8 @@ const Review: NextPage = () => {
     }
     let result = [] as CreatedReview[];
     reviews.forEach(({ level = LEVEL.냠냠, taste = [] }, foodName) => {
-      const tagIds = Array.from(taste);
-      result.push({ hotLevel: level, tagIds, foodId: foodInfo.get(foodName) });
+      const tags = Array.from(taste);
+      result.push({ hotLevel: level, tags, foodId: foodInfo.get(foodName) });
     });
     mutation.mutate(result);
   };
@@ -99,7 +98,7 @@ const Review: NextPage = () => {
   return (
     <>
       <Header type="center">
-        <span>리뷰 {foods?.data.length}개만 부탁해...</span>
+        <span>리뷰 {foods?.length}개만 부탁해...</span>
       </Header>
       <Container>
         <ReviewContainer>

@@ -2,16 +2,12 @@ import { css, useTheme } from '@emotion/react';
 import { useRouter } from 'next/router';
 import React, { useCallback, useMemo, useState } from 'react';
 import { useMutation, useQuery } from 'react-query';
-import {
-  getLevelTestFoodsQuery,
-  LevelTestFoods,
-  postLevelTestQuery,
-} from '@/api/levelTest';
+import { getLevelTestFoodsQuery, postLevelTestQuery } from '@/api/levelTest';
 import { AnonymousUser, getAnonymousUserQuery } from '@/api/user';
 import { Header, SpicyLevelSection } from '@/components/Common';
 import FoodOverview from '@/components/Common/FoodOverview';
 import { ROUTES } from '@/constants';
-import { LEVEL } from '@/types';
+import { Food, LEVEL } from '@/types';
 
 export default function LevelTestPage() {
   const theme = useTheme();
@@ -23,9 +19,15 @@ export default function LevelTestPage() {
     []
   );
   const [testIsDone, setTestIsDone] = useState(false);
-  const { data: foods } = useQuery<LevelTestFoods>(
+  const { data: foods } = useQuery<Food[]>(
     ['levelTestFoods'],
-    getLevelTestFoodsQuery
+    getLevelTestFoodsQuery,
+    {
+      useErrorBoundary: true,
+      refetchOnWindowFocus: false,
+      refetchInterval: 0,
+      refetchOnReconnect: false,
+    }
   );
 
   const goToNextStep = useCallback(
@@ -35,7 +37,7 @@ export default function LevelTestPage() {
       setLevel(selectedLevel);
       setResult([...result, { foodId, hotLevel: selectedLevel }]);
 
-      if (foods && step < foods?.data.length) {
+      if (foods && step < foods?.length) {
         setTimeout(() => {
           setLevel(undefined);
           setStep((step) => step + 1);
@@ -43,7 +45,6 @@ export default function LevelTestPage() {
 
         return;
       }
-
       setTestIsDone(true);
     },
     [result, foods, step]
@@ -52,7 +53,13 @@ export default function LevelTestPage() {
   const { data: user } = useQuery<AnonymousUser>(
     ['anonymousUser'],
     getAnonymousUserQuery,
-    { enabled: testIsDone, onSuccess: () => mutation.mutate(result) }
+    {
+      enabled: testIsDone,
+      onSuccess: () => {
+        return mutation.mutate(result);
+      },
+      useErrorBoundary: true,
+    }
   );
 
   const mutation = useMutation(postLevelTestQuery, {
@@ -62,10 +69,10 @@ export default function LevelTestPage() {
   return (
     <div>
       {
-        foods?.data.map((food) => (
+        foods?.map((food) => (
           <div key={food.id}>
             <Header type="center">
-              맵레벨 테스트 ({step}/{foods.data.length})
+              맵레벨 테스트 ({step}/{foods.length})
             </Header>
             <div
               css={css`
@@ -77,7 +84,7 @@ export default function LevelTestPage() {
             >
               <div
                 css={css`
-                  width: ${(100 / foods.data.length) * step}%;
+                  width: ${(100 / foods.length) * step}%;
                   height: 100%;
                   background-color: ${theme.colors.red};
                 `}

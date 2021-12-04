@@ -1,11 +1,12 @@
-import axios from 'axios';
+import axios, { AxiosRequestConfig, AxiosResponse, Method } from 'axios';
+import CustomError, { StatusCode } from '@/utils/customError';
 
 export const baseURL =
   process.env.NEXT_PUBLIC_APP_ENV === 'prod'
     ? 'https://api.ohmebddeng.kr/v1'
     : 'https://api-dev.ohmebddeng.kr/v1';
 
-export const apiClient = axios.create({
+const apiClient = axios.create({
   baseURL,
   withCredentials: true,
   headers: {
@@ -15,6 +16,39 @@ export const apiClient = axios.create({
 
 export type Response<T> = {
   data: T;
-  statusCode: number;
+  statusCode: StatusCode;
   message: string;
 };
+
+const fetchWrap = async <T>({
+  method,
+  url,
+  options,
+}: {
+  method: Method;
+  url: string;
+  options?: AxiosRequestConfig;
+}): Promise<Response<T>> => {
+  const { data } = (await apiClient({
+    method,
+    url,
+    ...options,
+  })) as AxiosResponse<Response<T>>;
+
+  if (data.statusCode !== 200) {
+    throw new CustomError(data.statusCode);
+  }
+  return data;
+};
+
+export const GET = <T>(url: string, options?: AxiosRequestConfig) =>
+  fetchWrap<T>({ method: 'get', url, options });
+
+export const POST = <T>(url: string, options?: AxiosRequestConfig) =>
+  fetchWrap<T>({ method: 'post', url, options });
+
+export const PATCH = <T>(url: string, options?: AxiosRequestConfig) =>
+  fetchWrap<T>({ method: 'patch', url, options });
+
+export const DELETE = <T>(url: string) =>
+  fetchWrap<T>({ method: 'delete', url });

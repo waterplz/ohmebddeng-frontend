@@ -1,76 +1,63 @@
-import { apiClient, Response } from '@/api';
+import { GET } from '@/api';
 
 export const anonymousUserIdKey = 'ohmebddeng-anonymous-user-id';
 export const userIdKey = 'ohmebddeng-user-id';
 
-export type AnonymousUser = Response<{
+export type AnonymousUser = {
   anonymousId: string;
   userId: string;
-}>;
+};
 
 export const getAnonymousUserQuery = async () => {
-  try {
-    const { data } = await apiClient.get<AnonymousUser>(`/user/anonymous`);
+  const { data } = await GET<AnonymousUser>(`/user/anonymous`);
+  localStorage.setItem(anonymousUserIdKey, data.anonymousId);
+  localStorage.setItem(userIdKey, data.userId);
 
-    localStorage.setItem(anonymousUserIdKey, data.data.anonymousId);
-    localStorage.setItem(userIdKey, data.data.userId);
-
-    return data;
-  } catch (error) {
-    // TODO: anonymous user id 저장 실패에 대한 피드백을 유저에게 전달해야한다.
-    console.log(error);
-    throw error;
-  }
+  return data;
 };
 
 export interface User {
-  data: {
+  id: string;
+  anonymousId: string;
+  appleId: string | null;
+  googleId: string | null;
+  kakaoId: string | null;
+  naverId: string | null;
+  facebookId: string | null;
+  email: string | null;
+  password: string | null;
+  nickname: string | null;
+  profileImageUrl: string | null;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string | null;
+  isDeleted: boolean;
+  role: string;
+  userLevel: {
     id: string;
-    anonymousId: string;
-    appleId: string | null;
-    googleId: string | null;
-    kakaoId: string | null;
-    naverId: string | null;
-    facebookId: string | null;
-    email: string | null;
-    password: string | null;
-    nickname: string | null;
-    profileImageUrl: string | null;
-    createdAt: string;
-    updatedAt: string;
-    deletedAt: string | null;
-    isDeleted: boolean;
-    role: string;
-    userLevel: {
-      id: string;
-      name: string;
-      imageUrl: string;
-      description: string;
-      level: number;
-    };
+    name: string;
+    imageUrl: string;
+    description: string;
+    level: number;
   };
-  statusCode: number;
-  message: string;
 }
 
 export const getUserQuery = async () => {
-  try {
-    const userId = localStorage.getItem(userIdKey);
-    const { data } = await apiClient.get<User>(`/user/${userId}`);
+  const userId = localStorage.getItem(userIdKey);
 
-    return data;
-  } catch (error) {
-    console.log(error);
-    throw error;
+  if (!userId) {
+    throw new Error('User ID is not found');
   }
+
+  const { data } = await GET<User>(`/user/${userId}`);
+
+  return data;
 };
 
 export type UserCount = { count: number; levelTestedOnly: boolean };
 
 export const getUserCount = async () => {
-  const {
-    data: { data },
-  } = await apiClient.get<Response<UserCount>>(`/user/count`, {
+  const { data } = await GET<UserCount>(`/user/count`, {
     params: {
       levelTestedOnly: false,
     },

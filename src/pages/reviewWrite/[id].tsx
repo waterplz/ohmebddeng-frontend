@@ -3,22 +3,21 @@ import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { useMutation, useQuery } from 'react-query';
-import { FoodDetails, getFoodDetail } from '@/api/foodDetail';
+import { getFoodDetail } from '@/api/foodDetail';
 import { postInitialReviewQuery } from '@/api/initialReview';
 import { Header } from '@/components/Common';
 import FoodOverview from '@/components/Common/FoodOverview';
 import Button from '@/components/Input/Button';
 import { ReviewForm } from '@/components/Review';
 import { ROUTES } from '@/constants';
-import theme from '@/styles/theme';
-import { Food, LEVEL, ReviewState, TASTE } from '@/types';
+import { Food, LEVEL, ReviewState } from '@/types';
 
 const ReviewWrite: NextPage<Food> = () => {
   const router = useRouter();
   const foodId = router.query.id as string;
   const [review, setReview] = useState<ReviewState>({});
   const [isTestDone, setIsTestDone] = useState(false);
-  const { data: foodDetail } = useQuery<FoodDetails>(
+  const { data: foodDetail } = useQuery<Food>(
     ['FoodDetails', foodId],
     () => getFoodDetail(foodId),
     { enabled: !!foodId }
@@ -26,9 +25,9 @@ const ReviewWrite: NextPage<Food> = () => {
 
   const food = {
     id: foodId,
-    imageUrl: foodDetail ? foodDetail.data.imageUrl : '',
-    name: foodDetail ? foodDetail.data.name : '',
-    subName: foodDetail ? foodDetail.data.subName : '',
+    imageUrl: foodDetail ? foodDetail.imageUrl : '',
+    name: foodDetail ? foodDetail.name : '',
+    subName: foodDetail ? foodDetail.subName : '',
   };
 
   const mutation = useMutation(postInitialReviewQuery, {
@@ -48,8 +47,8 @@ const ReviewWrite: NextPage<Food> = () => {
       alert('선택을 완료해주세요');
       return;
     }
-    const tagIds = Array.from(review.taste ?? []);
-    mutation.mutate({ hotLevel: review.level as LEVEL, tagIds, foodId });
+    const tags = Array.from(review.taste ?? []);
+    mutation.mutate({ hotLevel: review.level as LEVEL, tags, foodId });
   };
 
   return (
