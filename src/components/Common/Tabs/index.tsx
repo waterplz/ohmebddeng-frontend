@@ -10,7 +10,6 @@ export interface TabsProps<T> {
 
 export default function Tabs<T>({ tabs, activeTab, onTabClick }: TabsProps<T>) {
   const handleClickTab = (tab: T) => (e: React.MouseEvent) => {
-    console.log(tab);
     onTabClick(tab);
   };
 

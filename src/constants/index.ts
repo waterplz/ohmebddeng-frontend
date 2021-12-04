@@ -8,4 +8,5 @@ export const ROUTES = {
   INQURY: '/inqury',
   FOOD_DETAIL: '/foodDetail',
   RANDOM: '/random',
+  오늘의추천_떡볶이: '/recommend/tteok-bokki',
 };

@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import Image from 'next/image';
 import React from 'react';
-import { USER_LEVEL, LEVEL } from '@/types';
+import { USER_LEVEL } from '@/types';
 import Navigator from '../Navigator';
 import level_0 from 'public/assets/Main/level0.svg';
 import level_1 from 'public/assets/Main/level1.svg';

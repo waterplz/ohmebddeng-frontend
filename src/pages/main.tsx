@@ -68,6 +68,7 @@ const Main: NextPage = () => {
           textSecond: '추천 떡볶이',
           image: svg_0,
           color: '#FF5341',
+          onClick: () => router.push(ROUTES.오늘의추천_떡볶이),
         },
         {
           textFirst: '오늘의',
@@ -90,7 +91,7 @@ const Main: NextPage = () => {
         },
       ],
     }),
-    []
+    [router]
   );
 
   return (
