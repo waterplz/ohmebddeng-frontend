@@ -7,6 +7,8 @@ import React, { useCallback, useState } from 'react';
 import { useQuery } from 'react-query';
 import { getFoods } from '@/api/food';
 import { Header } from '@/components/Common';
+import FoodList from '@/components/Common/FoodList';
+import Tabs from '@/components/Common/Tabs';
 import { ROUTES } from '@/constants';
 import { Food, TASTE_LEVEL } from '@/types';
 import arrow_under from '@public/assets/common/arrow_under.svg';
@@ -19,11 +21,12 @@ const CategoryByTaste: NextPage = () => {
   const { data: foods } = useQuery<Food[]>(
     ['getFoods', category, level],
     () => getFoods({ category, hotLevel: level as TASTE_LEVEL }),
-    { enabled: !!level }
+    { enabled: !!level, useErrorBoundary: true }
   );
 
   const handleClickTab = useCallback(
-    (level: TASTE_LEVEL) => () => {
+    (level: TASTE_LEVEL) => {
+      console.log(level);
       router.push(`${ROUTES.CATEGORY}/${level}`);
     },
     [router]
@@ -45,19 +48,16 @@ const CategoryByTaste: NextPage = () => {
 
   return (
     <div>
-      <Header type="center">오늘 뭐가 땡겨?</Header>
+      <Header type="center" showBackButton>
+        오늘 뭐가 땡겨?
+      </Header>
       <Wrapper>
-        <Tabs>
-          {Object.values(TASTE_LEVEL).map((_level) => (
-            <Tab
-              key={_level}
-              active={_level === level}
-              onClick={handleClickTab(_level)}
-            >
-              {_level}
-            </Tab>
-          ))}
-        </Tabs>
+        <Tabs
+          tabs={Object.values(TASTE_LEVEL)}
+          activeTab={level as TASTE_LEVEL}
+          onTabClick={handleClickTab}
+        />
+
         <FilterContainer>
           <div
             css={css`
@@ -72,31 +72,12 @@ const CategoryByTaste: NextPage = () => {
               ))}
             </FilterSelector>
             <ArrowIcon>
-              <Image src={arrow_under} width={14} height={14} />
+              <Image src={arrow_under} width={14} height={14} alt="" />
             </ArrowIcon>
           </div>
         </FilterContainer>
-        <Lists>
-          {foods?.map((food) => (
-            <FoodItem key={food.id} onClick={handleClickFood(food.id)}>
-              <Image
-                src={food.imageUrl}
-                alt={food.name}
-                width={52}
-                height={84}
-              />
-              <FoodInfo>
-                <Name>
-                  {food.name} {food.subName}
-                </Name>
-                <Info>
-                  Lorem ipsum dolor, <br />
-                  sit amet consectetur adipisicing elit.
-                </Info>
-              </FoodInfo>
-            </FoodItem>
-          ))}
-        </Lists>
+
+        <FoodList foods={foods} onClickFood={handleClickFood} />
       </Wrapper>
     </div>
   );
@@ -105,26 +86,8 @@ const CategoryByTaste: NextPage = () => {
 const Wrapper = styled.div`
   padding: 0 16px;
 `;
-const Tabs = styled.nav`
-  display: flex;
-`;
-const Tab = styled.button<{ active?: boolean }>`
-  padding: 13px 0;
-  flex: 1;
-  color: ${({ theme }) => theme.colors.grey20};
-  background-color: transparent;
-  border: none;
-  outline: none;
-
-  ${({ theme, active }) =>
-    active &&
-    css`
-      color: ${theme.colors.white};
-      border-bottom: 2px solid ${theme.colors.red};
-    `}
-`;
 const FilterContainer = styled.div`
-  padding: 9px 0;
+  padding: 9px 0 0;
   text-align: right;
   margin-top: 12px;
 
@@ -151,32 +114,6 @@ const ArrowIcon = styled.div`
   position: absolute;
   top: 1px;
   right: 0;
-`;
-const Lists = styled.ul`
-  padding: 0 0 0 14px;
-  display: flex;
-  flex-direction: column;
-
-  & > * + * {
-    margin-top: 44px;
-  }
-`;
-const FoodItem = styled.div`
-  display: flex;
-`;
-const FoodInfo = styled.div`
-  margin-top: 10px;
-  margin-left: 26px;
-  text-align: left;
-`;
-const Name = styled.div`
-  margin-bottom: 8px;
-  font-weight: bold;
-  font-size: 15px;
-`;
-const Info = styled.div`
-  font-size: 13px;
-  color: #8e8e93;
 `;
 
 export default CategoryByTaste;

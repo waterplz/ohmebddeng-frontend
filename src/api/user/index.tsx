@@ -1,17 +1,17 @@
-import { GET, Response } from '@/api';
+import { GET } from '@/api';
 
 export const anonymousUserIdKey = 'ohmebddeng-anonymous-user-id';
 export const userIdKey = 'ohmebddeng-user-id';
 
-export type AnonymousUser = Response<{
+export type AnonymousUser = {
   anonymousId: string;
   userId: string;
-}>;
+};
 
 export const getAnonymousUserQuery = async () => {
   const { data } = await GET<AnonymousUser>(`/user/anonymous`);
-  localStorage.setItem(anonymousUserIdKey, data.data.anonymousId);
-  localStorage.setItem(userIdKey, data.data.userId);
+  localStorage.setItem(anonymousUserIdKey, data.anonymousId);
+  localStorage.setItem(userIdKey, data.userId);
 
   return data;
 };
@@ -44,6 +44,11 @@ export interface User {
 
 export const getUserQuery = async () => {
   const userId = localStorage.getItem(userIdKey);
+
+  if (!userId) {
+    throw new Error('User ID is not found');
+  }
+
   const { data } = await GET<User>(`/user/${userId}`);
 
   return data;

@@ -24,6 +24,9 @@ export default function LevelTestPage() {
     getLevelTestFoodsQuery,
     {
       useErrorBoundary: true,
+      refetchOnWindowFocus: false,
+      refetchInterval: 0,
+      refetchOnReconnect: false,
     }
   );
 
