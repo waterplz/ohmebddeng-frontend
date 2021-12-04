@@ -24,7 +24,7 @@ const SpicyLevelSection = ({
       {children ? (
         children
       ) : (
-        <DefaultHeeder>얼마나 맵게 느껴지나요?</DefaultHeeder>
+        <DefaultHeader>얼마나 맵게 느껴지나요?</DefaultHeader>
       )}
 
       <SpicyLevelForm level={level} disabled={!!level} {...props} />
@@ -39,7 +39,7 @@ const Container = styled.section<{ transparent?: boolean }>`
     transparent ? `transparent` : theme.colors.background};
   border-radius: 14px;
 `;
-const DefaultHeeder = styled.h3`
+const DefaultHeader = styled.h3`
   margin-bottom: 26px;
   font-weight: 800;
   font-size: 17px;
