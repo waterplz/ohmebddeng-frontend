@@ -1,7 +1,6 @@
-import { apiClient } from '@/api';
+import { GET, POST } from '@/api';
 import { User, userIdKey } from '@/api/user';
-import { LEVEL } from '@/types';
-import { LevelTestFoods } from '../levelTest';
+import { Food, LEVEL } from '@/types';
 
 export interface CreatedReview {
   foodId: string;
@@ -10,14 +9,14 @@ export interface CreatedReview {
 }
 
 export const getInitialReviewFood = async () => {
-  const { data } = await apiClient.get<LevelTestFoods>('food/reviews');
+  const { data } = await GET<Food[]>('food/reviews');
   return data;
 };
 
 // 리뷰 결과 보내는 쿼리 작성 (한 개)
 export const postInitialReviewQuery = async (review: CreatedReview) => {
   const userId = localStorage.getItem(userIdKey);
-  const { data } = await apiClient.post<User>('/review/food', {
+  const { data } = await POST<User>('/review/food', {
     userId,
     ...review,
   });
@@ -27,7 +26,7 @@ export const postInitialReviewQuery = async (review: CreatedReview) => {
 // 리뷰 결과 보내는 쿼리 작성 (여러 개)
 export const postInitialReviewsQuery = async (reviewList: CreatedReview[]) => {
   const userId = localStorage.getItem(userIdKey);
-  const { data } = await apiClient.post<User>('/review/foods', {
+  const { data } = await POST<User>('/review/foods', {
     userId,
     reviewList,
   });

@@ -1,4 +1,4 @@
-import { apiClient, Response } from '@/api';
+import { GET } from '@/api';
 
 export type RandomFoodType = {
   id: string;
@@ -8,8 +8,6 @@ export type RandomFoodType = {
 };
 
 export const getRandomFood = async () => {
-  const {
-    data: { data },
-  } = await apiClient.get<Response<RandomFoodType>>('/food/random');
+  const { data } = await GET<RandomFoodType>('/food/random');
   return data;
 };

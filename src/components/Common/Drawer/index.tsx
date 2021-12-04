@@ -29,7 +29,7 @@ const Drawer = ({ closeDrawerHandler, isOpen = false }: DrawerProps) => {
 
     if (navigator.share) {
       const title = document.title;
-      const url = `${window.location.origin}${ROUTES.TEST_RESULT}/${user.data.userLevel.level}`;
+      const url = `${window.location.origin}${ROUTES.TEST_RESULT}/${user.userLevel.level}`;
       navigator
         .share({
           title,
