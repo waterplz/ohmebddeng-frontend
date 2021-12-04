@@ -1,17 +1,17 @@
-import { GET, Response } from '@/api';
+import { GET } from '@/api';
 
 export const anonymousUserIdKey = 'ohmebddeng-anonymous-user-id';
 export const userIdKey = 'ohmebddeng-user-id';
 
-export type AnonymousUser = Response<{
+export type AnonymousUser = {
   anonymousId: string;
   userId: string;
-}>;
+};
 
 export const getAnonymousUserQuery = async () => {
   const { data } = await GET<AnonymousUser>(`/user/anonymous`);
-  localStorage.setItem(anonymousUserIdKey, data.data.anonymousId);
-  localStorage.setItem(userIdKey, data.data.userId);
+  localStorage.setItem(anonymousUserIdKey, data.anonymousId);
+  localStorage.setItem(userIdKey, data.userId);
 
   return data;
 };
