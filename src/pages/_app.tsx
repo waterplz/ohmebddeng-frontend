@@ -1,6 +1,7 @@
 import { ThemeProvider } from '@emotion/react';
 import type { AppProps } from 'next/app';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import ErrorBoundary from '@/components/Common/ErrorBoundary';
 import GTMBody from '@/components/Common/GTMBody';
 import GTMHead from '@/components/Common/GTMHead';
 import DefaultHead from '@/components/Head';
@@ -22,7 +23,9 @@ function MyApp({ Component, pageProps }: AppProps) {
       <QueryClientProvider client={queryClient}>
         <ThemeProvider theme={theme}>
           <Layout>
-            <Component {...pageProps} />
+            <ErrorBoundary>
+              <Component {...pageProps} />
+            </ErrorBoundary>
           </Layout>
         </ThemeProvider>
       </QueryClientProvider>
