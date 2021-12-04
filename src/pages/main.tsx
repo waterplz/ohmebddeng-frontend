@@ -57,17 +57,27 @@ const UserLevelNumber: { [index: number]: USER_LEVEL } = {
   5: USER_LEVEL.맵마스터,
 };
 
-const sliderSetting = {
-  dots: true,
-};
-
 const Main: NextPage = () => {
   const router = useRouter();
   const [drawerOpend, setDrawerOpend] = useState(false);
   const { data: user } = useQuery<User>(['getUser'], getUserQuery);
+  const [slideIndex, setSlideIndex] = useState(0);
 
   const handleDrawerOpen = () => setDrawerOpend(true);
   const hanldeDrawerClose = () => setDrawerOpend(false);
+
+  const sliderSetting = {
+    dots: true,
+    arrows: false,
+    beforeChange: (prev: number, next: number) => {
+      setSlideIndex(next);
+    },
+    customPaging: (index: number) => (
+      <ClickArea>
+        <Dots index={index} slideIndex={slideIndex} />
+      </ClickArea>
+    ),
+  };
 
   const handleClickRandom = useCallback(() => {
     router.push(ROUTES.RANDOM);
@@ -115,12 +125,14 @@ const Main: NextPage = () => {
                 <ProfileCard level={level} key={level} />
               ))}
             </Slider>
-            <Category
-              disabled
-              disabledText={'레벨테스트 받으면 맞춤형 음식 추천이!'}
-              title={Recommend.title}
-              contents={Recommend.contents.slice(0, 2)}
-            />
+            <CategoryList>
+              <Category
+                disabled
+                disabledText={'레벨테스트 받으면 맞춤형 음식 추천이!'}
+                title={Recommend.title}
+                contents={Recommend.contents.slice(0, 2)}
+              />
+            </CategoryList>
           </>
         )}
       </Container>
@@ -131,12 +143,33 @@ const Main: NextPage = () => {
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 0 11.5px;
   font-weight: 800;
   overflow: hidden;
 
   & > * {
     margin: 15px 0;
   }
+  .slick-dots li {
+    width: 9px;
+  }
 `;
+
+const CategoryList = styled.div`
+  margin: 0 11.5px;
+`;
+
+const ClickArea = styled.div`
+  width: 20px;
+  height: 10px;
+`;
+
+const Dots = styled.div<{ index: number; slideIndex: number }>`
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #ff5252;
+  background-color: ${({ index, slideIndex }) =>
+    index === slideIndex ? '#FF5252' : '#636366'};
+`;
+
 export default Main;
