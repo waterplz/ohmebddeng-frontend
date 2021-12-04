@@ -44,6 +44,11 @@ export interface User {
 
 export const getUserQuery = async () => {
   const userId = localStorage.getItem(userIdKey);
+
+  if (!userId) {
+    throw new Error('User ID is not found');
+  }
+
   const { data } = await GET<User>(`/user/${userId}`);
 
   return data;
