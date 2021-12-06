@@ -6,6 +6,7 @@ export interface CreatedReview {
   foodId: string;
   hotLevel: LEVEL;
   tags: string[];
+  foodRecommendation?: string;
 }
 
 export const getInitialReviewFood = async () => {

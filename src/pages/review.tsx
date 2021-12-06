@@ -6,29 +6,26 @@ import React, { useState } from 'react';
 import { useMutation, useQuery } from 'react-query';
 import {
   getInitialReviewFood,
-  postInitialReviewsQuery,
-  CreatedReview,
+  postInitialReviewQuery,
 } from '@/api/initialReview';
 import { getUserQuery, User } from '@/api/user';
 import { Header } from '@/components/Common';
 import Button from '@/components/Input/Button';
 import { ReviewForm } from '@/components/Review';
 import { ROUTES } from '@/constants';
-import { LEVEL, TASTE, ReviewState, Food } from '@/types';
-
-const foodInfo = new Map();
+import { LEVEL, ReviewState, Food } from '@/types';
 
 const Review: NextPage = () => {
   const router = useRouter();
   const [review, setReview] = useState<ReviewState>({});
+  const [recommendatedFood, setRecommendatedFood] = useState('');
   const [isTestDone, setIsTestDone] = useState(false);
-  const [reviews, setReviews] = useState<Map<string, ReviewState>>(new Map());
   const { data: food } = useQuery<Food>(['initialReviewFoods'], () =>
     getInitialReviewFood()
   );
   const { data: user } = useQuery<User>(['getUser'], getUserQuery);
 
-  const mutation = useMutation(postInitialReviewsQuery, {
+  const mutation = useMutation(postInitialReviewQuery, {
     onSuccess: () =>
       router.push(`${ROUTES.TEST_RESULT}/${user?.userLevel.level}`),
   });
@@ -41,7 +38,26 @@ const Review: NextPage = () => {
     setIsTestDone(value);
   };
 
-  const handleSubmit = () => {};
+  const handleSubmit = () => {
+    if (!food) return;
+    if (!isTestDone) {
+      alert('선택을 완료해주세요');
+      return;
+    }
+    const tags = Array.from(review.taste ?? []);
+    mutation.mutate({
+      hotLevel: review.level as LEVEL,
+      tags,
+      foodId: food?.id,
+      foodRecommendation: recommendatedFood,
+    });
+  };
+
+  const handleInputTextArea = (
+    event: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    setRecommendatedFood(event.target.value);
+  };
 
   return (
     <Container>
@@ -71,7 +87,10 @@ const Review: NextPage = () => {
         <RecommendationTitle>
           추천하고 싶은 매운 음식이 있나요? (선택)
         </RecommendationTitle>
-        <RecommendationTextArea />
+        <RecommendationTextArea
+          value={recommendatedFood}
+          onChange={handleInputTextArea}
+        />
       </RecommendationContainer>
       <ButtonContainer>
         <div>
