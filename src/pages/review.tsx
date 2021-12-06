@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import type { NextPage } from 'next';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useMutation, useQuery } from 'react-query';
 import {
   getInitialReviewFood,
@@ -10,20 +10,20 @@ import {
   CreatedReview,
 } from '@/api/initialReview';
 import { getUserQuery, User } from '@/api/user';
-import { Header, SpicyLevelForm } from '@/components/Common';
+import { Header } from '@/components/Common';
 import Button from '@/components/Input/Button';
-import { TasteForm } from '@/components/Review';
+import { ReviewForm } from '@/components/Review';
 import { ROUTES } from '@/constants';
 import { LEVEL, TASTE, ReviewState, Food } from '@/types';
-import svg_0 from 'public/assets/FoodReview/0.svg';
 
 const foodInfo = new Map();
 
 const Review: NextPage = () => {
   const router = useRouter();
+  const [review, setReview] = useState<ReviewState>({});
   const [isTestDone, setIsTestDone] = useState(false);
   const [reviews, setReviews] = useState<Map<string, ReviewState>>(new Map());
-  const { data: foods } = useQuery<Food[]>(['initialReviewFoods'], () =>
+  const { data: food } = useQuery<Food>(['initialReviewFoods'], () =>
     getInitialReviewFood()
   );
   const { data: user } = useQuery<User>(['getUser'], getUserQuery);
@@ -33,155 +33,144 @@ const Review: NextPage = () => {
       router.push(`${ROUTES.TEST_RESULT}/${user?.userLevel.level}`),
   });
 
-  useEffect(() => {
-    if (foods) {
-      const map = new Map();
-      foods.forEach(({ name, subName, id }) => {
-        map.set(`${name} ${subName}`, {});
-        foodInfo.set(`${name} ${subName}`, id);
-        setReviews(map);
-      });
-    }
-  }, [foods]);
-
-  useEffect(() => {
-    for (const [_, { level, taste }] of Array.from(reviews.entries())) {
-      if (!level || (level !== LEVEL.모름 && (!taste || !taste.size))) {
-        setIsTestDone(false);
-        return;
-      }
-    }
-    setIsTestDone(true);
-  }, [reviews]);
-
-  const handleSubmit = () => {
-    if (!isTestDone) {
-      alert('선택을 완료해주세요');
-      return;
-    }
-    let result = [] as CreatedReview[];
-    reviews.forEach(({ level = LEVEL.냠냠, taste = [] }, foodName) => {
-      const tags = Array.from(taste);
-      result.push({ hotLevel: level, tags, foodId: foodInfo.get(foodName) });
-    });
-    mutation.mutate(result);
+  const handleReview = (value: ReviewState) => {
+    setReview(value);
   };
 
-  const handleCheckLevel =
-    (name: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
-      const level = (event.target as HTMLInputElement).value as LEVEL;
-      setReviews(
-        (prev) =>
-          new Map(
-            prev.set(name, {
-              level,
-              taste: level === LEVEL.모름 ? new Set() : prev.get(name)?.taste,
-            })
-          )
-      );
-    };
+  const handleIsTestDone = (value: boolean) => {
+    setIsTestDone(value);
+  };
 
-  const handleCheckTaste =
-    (name: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
-      const formerReview = reviews.get(name);
-      const taste = (event.target as HTMLInputElement).value as TASTE;
-      const updatedTaste = formerReview?.taste ?? new Set();
-      updatedTaste.has(taste)
-        ? updatedTaste.delete(taste)
-        : updatedTaste.add(taste);
-      setReviews(
-        (prev) =>
-          new Map(prev.set(name, { ...formerReview, taste: updatedTaste }))
-      );
-    };
+  const handleSubmit = () => {};
 
   return (
-    <>
-      <Header type="center">
-        <span>리뷰 {foods?.length}개만 부탁해...</span>
-      </Header>
-      <Container>
-        <ReviewContainer>
-          {foods &&
-            Object.keys(Object.fromEntries(reviews)).map((foodName) => {
-              const data = reviews.get(foodName);
-              return (
-                <ReviewSection key={foodName}>
-                  <TitleContainer>
-                    <Image src={svg_0} alt="thumnail" />
-                    <h2>{foodName}</h2>
-                  </TitleContainer>
-                  <SpicyLevelForm
-                    level={data?.level}
-                    onChange={handleCheckLevel(foodName)}
-                  />
-                  <Divider>
-                    <TasteForm
-                      disabled={data?.level === LEVEL.모름}
-                      taste={data?.taste}
-                      onChange={handleCheckTaste(foodName)}
-                    />
-                  </Divider>
-                </ReviewSection>
-              );
-            })}
-        </ReviewContainer>
-      </Container>
-      <Button
-        fullWidth
-        buttonType={'contained'}
-        color={isTestDone ? 'red' : 'grey'}
-        rounded={false}
-        onClick={handleSubmit}
+    <Container>
+      <Header type="center">리뷰작성</Header>
+      <TitleContainer>
+        <Title>
+          <span>🔥</span>
+          <Description>
+            매운맛에 진심인 당신의 도움이 필요합니다! 리뷰 작성 으로 많은
+            사람에게 정보를 제공해줄 수 있어요.
+          </Description>
+        </Title>
+      </TitleContainer>
+      <ReviewForm
+        review={review}
+        handleReview={handleReview}
+        handleIsTestDone={handleIsTestDone}
       >
-        완료
-      </Button>
-    </>
+        {food && (
+          <ReviewFormTitle>
+            <Image src={food.imageUrl} alt="error" width="32" height="24" />
+            <h2>{food.name}</h2>
+          </ReviewFormTitle>
+        )}
+      </ReviewForm>
+      <RecommendationContainer>
+        <RecommendationTitle>
+          추천하고 싶은 매운 음식이 있나요? (선택)
+        </RecommendationTitle>
+        <RecommendationTextArea />
+      </RecommendationContainer>
+      <ButtonContainer>
+        <div>
+          <Button
+            fullWidth
+            buttonType={'contained'}
+            color={'darkGrey'}
+            rounded={false}
+            onClick={handleSubmit}
+          >
+            다음에 할래요
+          </Button>
+        </div>
+        <Button
+          fullWidth
+          buttonType={'contained'}
+          color={isTestDone ? 'red' : 'grey'}
+          rounded={false}
+          onClick={handleSubmit}
+        >
+          등록하기
+        </Button>
+      </ButtonContainer>
+    </Container>
   );
 };
 
 const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin: 0 16px 0 17px;
-  height: 100%;
-`;
-
-const ReviewContainer = styled.div`
-  margin: 16px 0 80px;
-  display: flex;
-  flex-direction: column;
-
-  & section:not(:last-child) {
-    margin-bottom: 20px;
-  }
-`;
-
-const Divider = styled.div`
-  margin-top: 20px;
-  border-top: ${({ theme }) => `2px solid ${theme.colors.grey40}`};
-`;
-
-const ReviewSection = styled.section`
-  display: flex;
-  flex-direction: column;
   width: 100%;
   height: 100%;
-  max-height: 315px;
-  background-color: rgba(255, 255, 255, 0.1);
-  border-radius: 16px;
-  padding: 17px 16px 16px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const TitleContainer = styled.div`
+  width: 100%;
+  padding: 8px 16px 18px 16px;
+`;
+
+const Title = styled.div`
   display: flex;
+  min-height: 58px;
+  background-color: ${({ theme }) => `${theme.colors.grey50}`};
+  border-radius: 16px;
+  padding: 13px 15px 11px 12px;
+`;
+
+const Description = styled.p`
+  max-width: 310px;
+  font-size: 12px;
+  line-height: 16.8px;
+  margin-left: 6px;
+  font-weight: normal;
+  text-align: left;
+`;
+
+const ReviewFormTitle = styled.div`
+  display: flex;
+  height: 60px;
   align-items: center;
-  margin-top: 4px;
-  margin-bottom: 20px;
+  justify-content: left;
+  padding: 0px 0 12px 17px;
+
   & h2 {
     margin-left: 8px;
-    line-height: 1;
   }
 `;
 
+const RecommendationContainer = styled.div`
+  width: 100%;
+  padding: 0 16px 48px 16px;
+`;
+const RecommendationTitle = styled.p`
+  font-size: 15px;
+  margin-bottom: 13px;
+  text-align: left;
+`;
+
+const RecommendationTextArea = styled.textarea`
+  width: 100%;
+  height: 78px;
+  background-color: ${({ theme }) => `${theme.colors.grey50}`};
+  border: none;
+  overflow: auto;
+  outline: none;
+  resize: none;
+  color: ${({ theme }) => `${theme.colors.white}`};
+  border-radius: 14px;
+  padding: 10px;
+`;
+
+const ButtonContainer = styled.div`
+  width: 100%;
+  display: flex;
+
+  padding: 0 16px;
+  & div {
+    width: 61.06666666666667%;
+  }
+`;
 export default Review;

@@ -2,9 +2,11 @@ import { css, Theme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { HTMLAttributes } from 'react';
 
+type colorType = 'green' | 'red' | 'grey' | 'darkGrey';
+
 export interface ButtonProps extends HTMLAttributes<HTMLButtonElement> {
   buttonType: 'contained' | 'outline';
-  color: 'green' | 'red' | 'grey';
+  color: colorType;
   rounded: boolean;
   fullWidth?: boolean;
   dense?: boolean;
@@ -54,10 +56,12 @@ const StyledButton = styled.button<ButtonProps>`
     `};
 `;
 
-const getColor = (color: string, theme: Theme) => {
-  return color === 'green'
-    ? theme.colors.green
-    : color === 'red'
-    ? theme.colors.red
-    : theme.colors.grey10;
+const getColor = (color: colorType, theme: Theme) => {
+  const COLOR = {
+    green: theme.colors.green,
+    red: theme.colors.red,
+    grey: theme.colors.grey10,
+    darkGrey: theme.colors.grey30,
+  };
+  return COLOR[color];
 };
