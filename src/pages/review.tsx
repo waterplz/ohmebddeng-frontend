@@ -61,8 +61,8 @@ const Review: NextPage = () => {
     }
     let result = [] as CreatedReview[];
     reviews.forEach(({ level = LEVEL.냠냠, taste = [] }, foodName) => {
-      const tagIds = Array.from(taste);
-      result.push({ hotLevel: level, tagIds, foodId: foodInfo.get(foodName) });
+      const tags = Array.from(taste);
+      result.push({ hotLevel: level, tags, foodId: foodInfo.get(foodName) });
     });
     mutation.mutate(result);
   };

@@ -5,7 +5,7 @@ import { Food, LEVEL } from '@/types';
 export interface CreatedReview {
   foodId: string;
   hotLevel: LEVEL;
-  tagIds: string[];
+  tags: string[];
 }
 
 export const getInitialReviewFood = async () => {
