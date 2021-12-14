@@ -38,7 +38,7 @@ const Review: NextPage = () => {
     setIsTestDone(value);
   };
 
-  const handleSubmit = () => {
+ const handleSubmit = () => {
     if (!food) return;
     if (!isTestDone) {
       alert('선택을 완료해주세요');
