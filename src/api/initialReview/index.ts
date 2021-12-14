@@ -6,10 +6,11 @@ export interface CreatedReview {
   foodId: string;
   hotLevel: LEVEL;
   tags: string[];
+  foodRecommendation?: string;
 }
 
 export const getInitialReviewFood = async () => {
-  const { data } = await GET<Food[]>('food/reviews');
+  const { data } = await GET<Food>('food/reviews');
   return data;
 };
 
