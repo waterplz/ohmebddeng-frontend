@@ -108,7 +108,7 @@ const Review: NextPage = () => {
             buttonType={'contained'}
             color={'darkGrey'}
             rounded={false}
-            onClick={handleSubmit}
+            onClick={goTestResult}
           >
             다음에 할래요
           </Button>

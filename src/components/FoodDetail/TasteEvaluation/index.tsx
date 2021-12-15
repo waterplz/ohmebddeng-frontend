@@ -60,13 +60,7 @@ const TasteContant = styled.label`
   padding: 12px 18px 11px;
   text-align: center;
 
-  &:first-of-type {
-    margin-left: 0;
-  }
-
-  &:nth-of-type(4) {
-    margin-left: 0;
-  }
+  margin: 4px 6px;
 `;
 
 const ReviewBtn = styled.div`
