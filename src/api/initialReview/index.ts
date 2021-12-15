@@ -23,6 +23,14 @@ export const postInitialReviewQuery = async (review: CreatedReview) => {
   return data;
 };
 
+// 리뷰 페이지에서 사용자가 음식 추가 요청
+export const postFoodRequestQuery = async (food: string) => {
+  const { data } = await POST<User>('/review/food/request', {
+    data: { food },
+  });
+  return data;
+};
+
 // 리뷰 결과 보내는 쿼리 작성 (여러 개)
 export const postInitialReviewsQuery = async (reviewList: CreatedReview[]) => {
   const userId = localStorage.getItem(userIdKey);
