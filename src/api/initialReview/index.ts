@@ -5,11 +5,12 @@ import { Food, LEVEL } from '@/types';
 export interface CreatedReview {
   foodId: string;
   hotLevel: LEVEL;
-  tagIds: string[];
+  tags: string[];
+  foodRecommendation?: string;
 }
 
 export const getInitialReviewFood = async () => {
-  const { data } = await GET<Food[]>('food/reviews');
+  const { data } = await GET<Food>('food/reviews');
   return data;
 };
 
@@ -18,6 +19,14 @@ export const postInitialReviewQuery = async (review: CreatedReview) => {
   const userId = localStorage.getItem(userIdKey);
   const { data } = await POST<User>('/review/food', {
     data: { userId, ...review },
+  });
+  return data;
+};
+
+// 리뷰 페이지에서 사용자가 음식 추가 요청
+export const postFoodRequestQuery = async (food: string) => {
+  const { data } = await POST<User>('/review/food/request', {
+    data: { food },
   });
   return data;
 };

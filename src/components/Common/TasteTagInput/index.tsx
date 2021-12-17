@@ -29,28 +29,18 @@ const TasteTagInput = ({
 };
 
 const Container = styled.label<{ checked?: boolean }>`
-  display: inline-block;
   border-radius: 24px;
+  border: ${({ checked, theme }) =>
+    checked
+      ? `solid 1px ${theme.colors.red}`
+      : `solid 1px ${theme.colors.grey20}`};
   background-color: ${({ checked, theme }) =>
-    checked ? theme.colors.red : theme.colors.grey40};
-  color: ${({ checked, theme }) =>
-    checked ? theme.colors.grey0 : theme.colors.grey10};
-  padding: 12px 18px 11px;
+    checked ? theme.colors.red : theme.colors.grey50};
+  color: ${({ theme }) => theme.colors.grey0};
+  padding: 14px 16px;
   text-align: center;
   cursor: pointer;
-
-  margin-left: 12px;
-
-  &:first-of-type {
-    margin-left: 0;
-  }
-
-  &:nth-of-type(4) {
-    margin-left: 0;
-  }
-  &:nth-of-type(-n + 3) {
-    margin-bottom: 9px;
-  }
+  margin: 4px 6px;
 `;
 
 const Input = styled.input`

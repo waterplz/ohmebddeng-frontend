@@ -28,7 +28,8 @@ const TasteForm = ({ taste, disabled = false, ...props }: TasteFormProps) => {
 const Form = styled.form`
   display: flex;
   flex-wrap: wrap;
-  padding-top: 20px;
+  padding-top: 10px;
+  align-content: space-between;
 `;
 
 export default TasteForm;
