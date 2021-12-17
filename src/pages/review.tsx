@@ -7,6 +7,7 @@ import { useMutation, useQuery } from 'react-query';
 import {
   getInitialReviewFood,
   postInitialReviewQuery,
+  postFoodRequestQuery,
 } from '@/api/initialReview';
 import { getUserQuery, User } from '@/api/user';
 import { Header } from '@/components/Common';
@@ -25,9 +26,18 @@ const Review: NextPage = () => {
   );
   const { data: user } = useQuery<User>(['getUser'], getUserQuery);
 
-  const mutation = useMutation(postInitialReviewQuery, {
+  const goTestResult = () =>
+    router.push(`${ROUTES.TEST_RESULT}/${user?.userLevel.level}`);
+
+  const mutationReview = useMutation(postInitialReviewQuery, {
     onSuccess: () =>
-      router.push(`${ROUTES.TEST_RESULT}/${user?.userLevel.level}`),
+      recommendatedFood.length
+        ? mutationRequest.mutate(recommendatedFood)
+        : goTestResult(),
+  });
+
+  const mutationRequest = useMutation(postFoodRequestQuery, {
+    onSuccess: () => goTestResult(),
   });
 
   const handleReview = (value: ReviewState) => {
@@ -38,18 +48,17 @@ const Review: NextPage = () => {
     setIsTestDone(value);
   };
 
- const handleSubmit = () => {
+  const handleSubmit = () => {
     if (!food) return;
     if (!isTestDone) {
       alert('선택을 완료해주세요');
       return;
     }
     const tags = Array.from(review.taste ?? []);
-    mutation.mutate({
+    mutationReview.mutate({
       hotLevel: review.level as LEVEL,
       tags,
       foodId: food?.id,
-      foodRecommendation: recommendatedFood,
     });
   };
 
@@ -99,7 +108,7 @@ const Review: NextPage = () => {
             buttonType={'contained'}
             color={'darkGrey'}
             rounded={false}
-            onClick={handleSubmit}
+            onClick={goTestResult}
           >
             다음에 할래요
           </Button>
